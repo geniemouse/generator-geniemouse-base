@@ -5,9 +5,6 @@
 # ...
 
 # Build tooling
-*.css.map
-.sass-cache
-
 bower_components/
 node_modules/
 
@@ -15,6 +12,7 @@ node_modules/
 *.log
 *.tmp
 
+.tmp/
 build/
 coverage/
 dist/
@@ -33,7 +31,4 @@ www/
 
 # OS files
 .DS_Store
-Desktop.ini
 Thumbs.db
-
-__MACOSX/
