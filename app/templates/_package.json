@@ -1,7 +1,18 @@
 {
-  "scripts": {},
+  "name": "<%= (appname) %>",
+  "version": "1.0.0",
+  "description": "",
   "private": true,
+  "scripts": {},
+  "keywords": [],
+  "author": {},
+  "engines": {
+    "node": ">=6.0.0"
+  },
   "dependencies": {},
-  "devDependencies": {},
-  "peerDependencies": {}
+  "devDependencies": {
+    "prettier": "^1.17.1"
+  },
+  "peerDependencies": {},
+  "repository": {}
 }
