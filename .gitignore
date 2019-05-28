@@ -1,39 +1,8 @@
-# Git ignore settings
-# ===================
-
-# Project-specific files or directories
-# ...
-
-# Build tooling
-*.css.map
-.sass-cache
-
-bower_components/
+coverage/
 node_modules/
 
-# Common project files
 *.log
 *.tmp
 
-build/
-coverage/
-dist/
-logs/
-public/
-reports/
-target/
-tmp/
-www/
-
-# IDE settings files
-*.brackets.json
-*.code-workspace
-*.mswwsettings
-*.sublime*
-
-# OS files
 .DS_Store
-Desktop.ini
 Thumbs.db
-
-__MACOSX/
