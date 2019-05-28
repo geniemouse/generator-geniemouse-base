@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "A Yeoman generator for producing base project structure and configuration files.",
   "private": true,
+  "main": "app/index.js",
   "files": [
     "app"
   ],
@@ -26,8 +27,16 @@
     "email": "admin@geniemouse.com",
     "url": "https://geniemouse.com"
   },
+  "engines": {
+    "node": ">=6.0.0"
+  },
   "dependencies": {
+    "chalk": "^2.4.2",
+    "command-exists": "^1.2.8",
+    "deep-extend": "^0.6.0",
+    "lodash": "^4.17.11",
     "mkdirp": "^0.5.1",
+    "path": "^0.12.7",
     "yeoman-generator": "^4.0.0",
     "yosay": "^2.0.2"
   },
@@ -40,6 +49,9 @@
     "eslint-plugin-prettier": "^3.1.0",
     "jest": "^24.8.0",
     "prettier": "^1.17.1"
+  },
+  "peerDependencies": {
+    "yo": ">=2.0.6"
   },
   "repository": {
     "type": "git",
