@@ -16,6 +16,25 @@ Read more about Yeoman [generators]?
 -   `README.md`
 -   `robots.txt` (optional)
 
+---
+
+# Installation
+
+**Dependencies**
+
+-   `git`
+-   `node` & `npm`
+-   `yarn` (optional)
+-   `yo`
+
+1. Install the base-generator globally
+2. Make a project directory & `cd` into it
+3. `yo generator-name`
+
+---
+
+# Configuration
+
 <!-- LINK REFERENCES -->
 
 [yeoman]: https://yeoman.io/
