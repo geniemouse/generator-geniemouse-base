@@ -1,0 +1,26 @@
+{
+  "env": {
+    "es6": true,
+    "browser": true,
+    "node": true,
+    "jest": true
+  },
+  "extends": ["airbnb-base", "prettier"],
+  "globals": {},
+  "parser": "esprima",
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "impliedStrict": true,
+    "sourceType": "module"
+  },
+  "plugins": ["prettier"],
+  "rules": {
+    "import/extensions": {
+      "js": "always",
+      "json": "always"
+    },
+    "no-param-reassign": ["error", { "props": false }],
+    "no-var": "off",
+    "object-shorthand": "off"
+  }
+}
