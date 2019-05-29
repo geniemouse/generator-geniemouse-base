@@ -6,10 +6,10 @@ const _ = require("lodash");
 const yosay = require("yosay");
 
 // Import local files
-const dependencies = require("./config/dependencies");
-const files = require("./config/files");
-const options = require("./config/options");
-const prompts = require("./config/prompts");
+const dependencies = require("../config/dependencies");
+const files = require("../config/files");
+const options = require("../config/options");
+const prompts = require("../config/prompts");
 
 // The generator package.json
 const packageJson = require("../package.json");
