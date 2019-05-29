@@ -1,4 +1,4 @@
-const { sortByKeyName } = require("../utils");
+const { configObject, configOrUndefined, sortByKeyName } = require("../utils");
 
 const devDependencies = {
     eslint: {
@@ -19,24 +19,14 @@ const devDependencies = {
     }
 };
 
-function setFeatureObject(feature, returnObj) {
-    return feature ? returnObj : {};
-}
-
-function setFeatureOrUndefined(feature, returnSettings) {
-    if (!feature) {
-        return;
-    }
-    return returnSettings;
-}
-
 function setScripts(data) {
+    const { includeESLint, includeJest } = data;
     const scripts = Object.assign(
         {},
-        setFeatureObject(data.includeESLint, {
+        configObject(includeESLint, {
             lint: "eslint ./"
         }),
-        setFeatureObject(data.includeJest, {
+        configObject(includeJest, {
             "test": "jest ./",
             "test:coverage": "jest ./ --coverage",
             "test:watch": "jest ./ --watchAll"
@@ -46,12 +36,14 @@ function setScripts(data) {
 }
 
 function setDevDependencies(data) {
+    const { includeESLint, includePrettier, includeJest } = data;
+    const { eslint, prettier, eslintPrettier, jest } = devDependencies;
     const collection = Object.assign(
         {},
-        setFeatureObject(data.includeESLint, devDependencies.eslint),
-        setFeatureObject(data.includePrettier, devDependencies.prettier),
-        setFeatureObject(data.includeESLint && data.includePrettier, devDependencies.eslintPrettier),
-        setFeatureObject(data.includeJest, devDependencies.jest)
+        configObject(includeESLint, eslint),
+        configObject(includePrettier, prettier),
+        configObject(includeESLint && includePrettier, eslintPrettier),
+        configObject(includeJest, jest)
     );
     // Sorting by keyname is an optional nicety;
     // consistentcy with how packages are normally listed in `package.json`
@@ -60,11 +52,11 @@ function setDevDependencies(data) {
 
 module.exports = function makePackage(data) {
     return {
-        jest: setFeatureOrUndefined(data.includeJest, {
+        jest: configOrUndefined(data.includeJest, {
             verbose: false,
             collectCoverage: false
         }),
-        prettier: setFeatureOrUndefined(data.includePrettier, "@geniemouse/prettier-config"),
+        prettier: configOrUndefined(data.includePrettier, "@geniemouse/prettier-config"),
         scripts: setScripts(data),
         dependencies: {},
         devDependencies: setDevDependencies(data),

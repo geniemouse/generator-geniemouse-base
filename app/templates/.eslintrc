@@ -2,10 +2,9 @@
   "env": {
     "es6": true,
     "browser": true,
-    "node": true,
-    "jest": true
+    "node": true
   },
-  "extends": ["airbnb-base", "prettier"],
+  "extends": [],
   "globals": {},
   "parser": "esprima",
   "parserOptions": {
@@ -13,7 +12,7 @@
     "impliedStrict": true,
     "sourceType": "module"
   },
-  "plugins": ["prettier"],
+  "plugins": [],
   "rules": {
     "import/extensions": {
       "js": "always",

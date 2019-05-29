@@ -8,6 +8,7 @@ const yosay = require("yosay");
 
 // Import local files
 const files = require("../config/files");
+const makeESLintConfig = require("../config/eslint");
 const makePackage = require("../config/package");
 const options = require("../config/options");
 const prompts = require("../config/prompts");
@@ -103,6 +104,11 @@ module.exports = class extends YeomanGenerator {
         });
 
         this.fs.extendJSON(this.destinationPath("package.json"), makePackage(templateData));
+
+        if (this.includeESLint) {
+            copyTemplate.call(this, ".eslintrc", ".eslintrc", templateData);
+            this.fs.extendJSON(this.destinationPath(".eslintrc"), makeESLintConfig(templateData));
+        }
 
         if (this.includeJest) {
             mkdirp("__tests__");

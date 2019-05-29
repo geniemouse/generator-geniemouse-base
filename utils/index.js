@@ -13,6 +13,29 @@ function sortByKeyName(obj) {
         }, {});
 }
 
+function configTemplate(options) {
+    const { feature, settings, empty } = options;
+    return feature ? settings : empty;
+}
+
+function configArray(feature, settings) {
+    return configTemplate({ feature, settings, empty: [] });
+}
+
+function configObject(feature, settings) {
+    return configTemplate({ feature, settings, empty: {} });
+}
+
+function configOrUndefined(feature, settings) {
+    if (!feature) {
+        return undefined;
+    }
+    return settings;
+}
+
 module.exports = {
+    configArray,
+    configObject,
+    configOrUndefined,
     sortByKeyName
 };
