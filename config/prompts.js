@@ -8,13 +8,26 @@ const prompts = [
     {
         type: "input",
         name: "appname",
-        message: "What is the project name?",
+        message: "Project name?",
         default: path.basename(process.cwd()),
         validate: (str) => {
             return str.trim().length > 0;
         }
     },
-    // @TODO: Add description & version number
+    {
+        type: "input",
+        name: "version",
+        message: "Version?",
+        default: "1.0.0",
+        validate: (str) => {
+            return /^(\d+.){2}\d+$/.test(str);
+        }
+    },
+    {
+        type: "input",
+        name: "description",
+        message: "Description:"
+    },
     {
         type: "checkbox",
         name: "codefeatures",

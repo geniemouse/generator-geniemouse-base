@@ -49,7 +49,10 @@ module.exports = class extends YeomanGenerator {
         }
 
         return this.prompt(prompts).then((answers) => {
-            this.appname = _.kebabCase(answers.appname);
+            this.name = answers.appname;
+            this.appname = _.kebabCase(this.name);
+            this.version = answers.version;
+            this.description = answers.description;
             this.includeESLint = hasFeature("includeESLint", answers.codefeatures);
             this.includePrettier = hasFeature("includePrettier", answers.codefeatures);
         });
@@ -58,7 +61,10 @@ module.exports = class extends YeomanGenerator {
     // Directories & files; including parsing data into them
     writing() {
         const templateData = {
+            name: this.name,
             appname: this.appname,
+            version: this.version,
+            description: this.description,
             date: new Date().toISOString().split("T")[0],
             generator: {
                 name: this.pkg.name,
@@ -66,9 +72,6 @@ module.exports = class extends YeomanGenerator {
             },
             includeESLint: this.includeESLint,
             includePrettier: this.includePrettier
-            // @TODO: add any optional flags, so template files can call on them
-            // includeARG_NAME: this.options[ARG_NAME]
-            // includeFEATURE_NAME: this.includeFEATURE_NAME
         };
 
         function copy(input, output) {

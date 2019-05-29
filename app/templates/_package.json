@@ -1,7 +1,7 @@
 {
   "name": "<%= (appname) %>",
-  "version": "1.0.0",
-  "description": "",
+  "version": "<%= (version) %>",
+  "description": "<%= (description) %>",
   "private": true,
   "scripts": {},
   "keywords": [],

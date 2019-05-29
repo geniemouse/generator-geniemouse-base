@@ -1,4 +1,5 @@
 const { sortByKeyName } = require("../utils");
+
 const devDependencies = {
     eslint: {
         "eslint": "^5.16.0",
