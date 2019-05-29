@@ -10,9 +10,7 @@
     "node": ">=6.0.0"
   },
   "dependencies": {},
-  "devDependencies": {
-    "prettier": "^1.17.1"
-  },
+  "devDependencies": {},
   "peerDependencies": {},
   "repository": {}
 }

@@ -1,9 +1,23 @@
 const files = {
-    // Root files: where input/output is same string value
+    /**
+     * Root template files:
+     * Where input/output string is identical value (i.e. no name/location change on copy step)
+     * @type {Array} of strings
+     */
     root: [".editorconfig", ".gitattributes", ".gitignore"],
 
-    // Files that need parsing with generator-captured data
-    // before being copying over
+    /**
+     * Template files to copy over:
+     * Files that need no parsing, where input & output locations differ or file name changes
+     * @type {Array} of objects, e.g.
+     * {input: "SOURCE_TEMPLATE_FILE", output:"DESTINATION_TEMPLATE_FILE"}
+     */
+    toCopy: [],
+
+    /**
+     * Template files that need parsing with generator-captured data
+     * @type {Array}
+     */
     toParse: [
         {
             input: "_package.json",

@@ -4,6 +4,9 @@
   "description": "A Yeoman generator for producing base project structure and configuration files.",
   "private": true,
   "main": "app/index.js",
+  "scripts": {
+    "lint": "eslint ./"
+  },
   "files": [
     "app"
   ],

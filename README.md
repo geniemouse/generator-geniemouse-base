@@ -6,7 +6,6 @@ Read more about Yeoman [generators]?
 
 ## List of generated files
 
--   `_netlify.toml` (optional)
 -   `.editorconfig`
 -   `.eslintrc` (optional)
 -   `.gitattributes`
