@@ -106,6 +106,7 @@ module.exports = class extends YeomanGenerator {
         this.fs.extendJSON(this.destinationPath("package.json"), makePackage(templateData));
 
         if (this.includeESLint) {
+            copy.call(this, ".eslintignore", ".eslintignore");
             copyTemplate.call(this, ".eslintrc", ".eslintrc", templateData);
             this.fs.extendJSON(this.destinationPath(".eslintrc"), makeESLintConfig(templateData));
         }

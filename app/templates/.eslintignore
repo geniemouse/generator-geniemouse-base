@@ -1,0 +1,13 @@
+# ESLint ignore settings
+# ======================
+
+.tmp/
+build/
+coverage/
+dist/
+logs/
+public/
+reports/
+target/
+tmp/
+www/
