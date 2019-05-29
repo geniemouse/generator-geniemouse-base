@@ -2,12 +2,12 @@
 const YeomanGenerator = require("yeoman-generator");
 const commandExists = require("command-exists").sync;
 const _ = require("lodash");
-// const mkdirp = require("mkdirp");
+const mkdirp = require("mkdirp");
 const yosay = require("yosay");
 
 // Import local files
-const dependencies = require("../config/dependencies");
 const files = require("../config/files");
+const makePackage = require("../config/package");
 const options = require("../config/options");
 const prompts = require("../config/prompts");
 
@@ -55,6 +55,7 @@ module.exports = class extends YeomanGenerator {
             this.description = answers.description;
             this.includeESLint = hasFeature("includeESLint", answers.codefeatures);
             this.includePrettier = hasFeature("includePrettier", answers.codefeatures);
+            this.includeJest = hasFeature("includeJest", answers.codefeatures);
         });
     }
 
@@ -71,7 +72,8 @@ module.exports = class extends YeomanGenerator {
                 version: this.pkg.version
             },
             includeESLint: this.includeESLint,
-            includePrettier: this.includePrettier
+            includePrettier: this.includePrettier,
+            includeJest: this.includeJest
         };
 
         function copy(input, output) {
@@ -97,9 +99,11 @@ module.exports = class extends YeomanGenerator {
             copyTemplate.call(this, file.input, file.output, templateData);
         });
 
-        this.fs.extendJSON(this.destinationPath("package.json"), dependencies(templateData));
+        this.fs.extendJSON(this.destinationPath("package.json"), makePackage(templateData));
 
-        // @TODO: add the rest... e.g. folder structure
+        if (this.includeJest) {
+            mkdirp("__tests__");
+        }
     }
 
     // Run the package install
