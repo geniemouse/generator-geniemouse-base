@@ -1,5 +1,6 @@
 // Import packages
 const YeomanGenerator = require("yeoman-generator");
+const chalk = require("chalk");
 const commandExists = require("command-exists").sync;
 const _ = require("lodash");
 const mkdirp = require("mkdirp");
@@ -43,7 +44,9 @@ module.exports = class extends YeomanGenerator {
         if (!this.options["skip-welcome-message"]) {
             this.log(
                 yosay(
-                    "'Allo 'allo! Out of the box I include .editorconfig, .gitattributes & .gitignore files. Nice and simple!"
+                    `'Allo 'allo! Out of the box, I include
+                    ${chalk.green(".editorconfig")}, ${chalk.green(".gitattributes")}
+                    & ${chalk.green(".gitignore")} files. Nice and simple!`
                 )
             );
         }
