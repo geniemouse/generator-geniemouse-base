@@ -133,8 +133,12 @@ module.exports = class extends YeomanGenerator {
 
     // Tidy-up
     end() {
-        this.log(`${chalk.blue("Finished generating base project files")}`);
-        this.log(`See the ${chalk.bold.italic("README.md")} file further details\n`);
+        this.log(
+            yosay(
+                `${chalk.blue("Finished generating base project files")}
+                See the ${chalk.bold.italic("README.md")} file further details\n`
+            )
+        );
     }
 
     // Testing
