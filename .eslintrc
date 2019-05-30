@@ -20,6 +20,7 @@
       "json": "always"
     },
     "no-param-reassign": ["error", { "props": false }],
+    "no-underscore-dangle": "off",
     "no-var": "off",
     "object-shorthand": "off"
   }

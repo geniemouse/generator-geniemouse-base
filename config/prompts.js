@@ -49,8 +49,8 @@ const prompts = [
      */
     {
         type: "checkbox",
-        name: "codefeatures",
-        message: "Which of the following code features would you like to include?",
+        name: "features",
+        message: "Which features would you like to include?",
         choices: [
             {
                 name: " ESLint",

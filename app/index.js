@@ -30,10 +30,6 @@ module.exports = class extends YeomanGenerator {
         });
     }
 
-    _hasFeature(featureName, features) {
-        return features && features.includes(featureName);
-    }
-
     _copy(input, output) {
         return this.fs.copy(this.templatePath(input), this.destinationPath(output));
     }
@@ -66,12 +62,16 @@ module.exports = class extends YeomanGenerator {
             this.answers.friendlyname = (() => {
                 return capitalize(answers.appname.replace(usernamePattern, "").replace(/-/g, " "));
             })();
+
+            this.includeESLint = answers.features.includes("includeESLint");
+            this.includePrettier = answers.features.includes("includePrettier");
+            this.includeJest = answers.features.includes("includeJest");
         });
     }
 
     // Directories & files; including parsing data into them
     writing() {
-        const { appname, codefeatures, description, friendlyname, version } = this.answers;
+        const { appname, description, friendlyname, version } = this.answers;
         const templateData = {
             appname,
             description,
@@ -82,9 +82,9 @@ module.exports = class extends YeomanGenerator {
                 name: this.pkg.name,
                 version: this.pkg.version
             },
-            includeESLint: this._hasFeature("includeESLint", codefeatures),
-            includePrettier: this._hasFeature("includePrettier", codefeatures),
-            includeJest: this._hasFeature("includeJest", codefeatures)
+            includeESLint: this.includeESLint,
+            includePrettier: this.includePrettier,
+            includeJest: this.includeJest
         };
 
         // Root files (straight copying task)

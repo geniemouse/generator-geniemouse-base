@@ -1,4 +1,4 @@
-const usernamePattern = /^@[a-z0-9\-]+\//i;
+const usernamePattern = /^@[a-z0-9-]+\//i;
 
 /**
  * Utility: Create an object with alphabetized key names from another
