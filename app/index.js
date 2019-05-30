@@ -2,11 +2,12 @@
 const YeomanGenerator = require("yeoman-generator");
 const chalk = require("chalk");
 const commandExists = require("command-exists").sync;
-const _ = require("lodash");
+const { capitalize } = require("lodash");
 const mkdirp = require("mkdirp");
 const yosay = require("yosay");
 
 // Import local files
+const { usernamePattern } = require("../utils");
 const files = require("../config/files");
 const makeESLintConfig = require("../config/eslint");
 const makePackage = require("../config/package");
@@ -62,18 +63,20 @@ module.exports = class extends YeomanGenerator {
 
         return this.prompt(prompts).then((answers) => {
             this.answers = answers;
-            this.answers.appname = _.kebabCase(answers.name);
+            this.answers.friendlyname = (() => {
+                return capitalize(answers.appname.replace(usernamePattern, "").replace(/-/g, " "));
+            })();
         });
     }
 
     // Directories & files; including parsing data into them
     writing() {
-        const { appname, codefeatures, description, name, version } = this.answers;
+        const { appname, codefeatures, description, friendlyname, version } = this.answers;
         const templateData = {
-            name,
-            version,
-            description,
             appname,
+            description,
+            friendlyname,
+            version,
             date: new Date().toISOString().split("T")[0],
             generator: {
                 name: this.pkg.name,

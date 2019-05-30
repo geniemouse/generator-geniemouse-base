@@ -1,6 +1,6 @@
-# Project README
+# <%= friendlyname %>
 
-Project description.
+<%= (description || "About this project..." ) %>
 
 <!-- MarkdownTOC levels="2,3,4" -->
 

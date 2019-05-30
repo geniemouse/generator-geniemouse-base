@@ -1,3 +1,5 @@
+const usernamePattern = /^@[a-z0-9\-]+\//i;
+
 /**
  * Utility: Create an object with alphabetized key names from another
  * - Although this doesn't matter to JS, humans will find this easier to parse
@@ -37,5 +39,6 @@ module.exports = {
     configArray,
     configObject,
     configOrUndefined,
-    sortByKeyName
+    sortByKeyName,
+    usernamePattern
 };

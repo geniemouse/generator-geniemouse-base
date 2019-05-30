@@ -1,4 +1,7 @@
 const path = require("path");
+const { kebabCase } = require("lodash");
+
+const { usernamePattern } = require("../utils");
 
 /**
  * Base generator questions shown (in order) on the commandline
@@ -9,9 +12,19 @@ const prompts = [
      */
     {
         type: "input",
-        name: "name",
-        message: "Project name?",
+        name: "appname",
+        message: "Project app name?",
+        suffix: " (Any entry will be kebab-cased)",
         default: path.basename(process.cwd()),
+        filter: (str) => {
+            const nameItems = str.trim().split(usernamePattern);
+            const lastItem = nameItems.length - 1;
+            if (usernamePattern.test(str)) {
+                nameItems[0] = String(str.match(usernamePattern));
+            }
+            nameItems[lastItem] = kebabCase(nameItems[lastItem]);
+            return nameItems.join("");
+        },
         validate: (str) => {
             return str.trim().length > 0;
         }

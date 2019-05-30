@@ -22,6 +22,10 @@ const files = {
         {
             input: "_package.json",
             output: "package.json"
+        },
+        {
+            input: "_README.md",
+            output: "README.md"
         }
     ]
 };
