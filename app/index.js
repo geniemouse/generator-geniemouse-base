@@ -42,7 +42,6 @@ module.exports = class extends YeomanGenerator {
     initializing() {
         // The generator package.json
         this.pkg = packageJson;
-        // @TODO: any other set-up?
     }
 
     // Asking the set-up questions
@@ -140,7 +139,4 @@ module.exports = class extends YeomanGenerator {
             )
         );
     }
-
-    // Testing
-    // test() {}
 };

@@ -5,7 +5,10 @@
   "private": true,
   "main": "app/index.js",
   "scripts": {
-    "lint": "eslint ./"
+    "lint": "eslint ./",
+    "test": "jest ./",
+    "test:coverage": "jest ./ --coverage",
+    "test:watch": "jest ./ --watchAll"
   },
   "files": [
     "app",
@@ -53,7 +56,9 @@
     "eslint-plugin-import": "^2.17.3",
     "eslint-plugin-prettier": "^3.1.0",
     "jest": "^24.8.0",
-    "prettier": "^1.17.1"
+    "prettier": "^1.17.1",
+    "yeoman-assert": "^3.1.1",
+    "yeoman-test": "^2.0.0"
   },
   "peerDependencies": {
     "yo": ">=2.0.6"
