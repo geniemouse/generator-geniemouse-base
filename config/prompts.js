@@ -9,7 +9,7 @@ const prompts = [
      */
     {
         type: "input",
-        name: "appname",
+        name: "name",
         message: "Project name?",
         default: path.basename(process.cwd()),
         validate: (str) => {
@@ -40,17 +40,17 @@ const prompts = [
         message: "Which of the following code features would you like to include?",
         choices: [
             {
-                name: "ESLint (script linter: https://eslint.org/)",
+                name: " ESLint",
                 value: "includeESLint",
                 checked: true
             },
             {
-                name: "Prettier (code formatter: https://prettier.io/)",
+                name: " Prettier",
                 value: "includePrettier",
                 checked: true
             },
             {
-                name: "Jest (unit testing: https://jestjs.io/)",
+                name: " Jest",
                 value: "includeJest",
                 checked: true
             }

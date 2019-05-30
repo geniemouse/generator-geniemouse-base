@@ -29,6 +29,18 @@ module.exports = class extends YeomanGenerator {
         });
     }
 
+    _hasFeature(featureName, features) {
+        return features && features.includes(featureName);
+    }
+
+    _copy(input, output) {
+        return this.fs.copy(this.templatePath(input), this.destinationPath(output));
+    }
+
+    _copyTemplate(input, output, data) {
+        return this.fs.copyTpl(this.templatePath(input), this.destinationPath(output), data);
+    }
+
     // Generator steps
     initializing() {
         // The generator package.json
@@ -38,10 +50,6 @@ module.exports = class extends YeomanGenerator {
 
     // Asking the set-up questions
     prompting() {
-        function hasFeature(featureName, features) {
-            return features && features.includes(featureName);
-        }
-
         if (!this.options["skip-welcome-message"]) {
             this.log(
                 yosay(
@@ -53,65 +61,53 @@ module.exports = class extends YeomanGenerator {
         }
 
         return this.prompt(prompts).then((answers) => {
-            this.name = answers.appname;
-            this.appname = _.kebabCase(this.name);
-            this.version = answers.version;
-            this.description = answers.description;
-            this.includeESLint = hasFeature("includeESLint", answers.codefeatures);
-            this.includePrettier = hasFeature("includePrettier", answers.codefeatures);
-            this.includeJest = hasFeature("includeJest", answers.codefeatures);
+            this.answers = answers;
+            this.answers.appname = _.kebabCase(answers.name);
         });
     }
 
     // Directories & files; including parsing data into them
     writing() {
+        const { appname, codefeatures, description, name, version } = this.answers;
         const templateData = {
-            name: this.name,
-            appname: this.appname,
-            version: this.version,
-            description: this.description,
+            name,
+            version,
+            description,
+            appname,
             date: new Date().toISOString().split("T")[0],
             generator: {
                 name: this.pkg.name,
                 version: this.pkg.version
             },
-            includeESLint: this.includeESLint,
-            includePrettier: this.includePrettier,
-            includeJest: this.includeJest
+            includeESLint: this._hasFeature("includeESLint", codefeatures),
+            includePrettier: this._hasFeature("includePrettier", codefeatures),
+            includeJest: this._hasFeature("includeJest", codefeatures)
         };
-
-        function copy(input, output) {
-            return this.fs.copy(this.templatePath(input), this.destinationPath(output));
-        }
-
-        function copyTemplate(input, output, data) {
-            return this.fs.copyTpl(this.templatePath(input), this.destinationPath(output), data);
-        }
 
         // Root files (straight copying task)
         files.root.forEach((file) => {
-            copy.call(this, file, file);
+            this._copy.call(this, file, file);
         });
 
         // Copy files from one location to another
         files.toCopy.forEach((file) => {
-            copy.call(this, file.input, file.output);
+            this._copy.call(this, file.input, file.output);
         });
 
         // Files to parse before copying over
         files.toParse.forEach((file) => {
-            copyTemplate.call(this, file.input, file.output, templateData);
+            this._copyTemplate.call(this, file.input, file.output, templateData);
         });
 
         this.fs.extendJSON(this.destinationPath("package.json"), makePackage(templateData));
 
         if (this.includePrettier) {
-            copy.call(this, ".prettierignore", ".prettierignore");
+            this._copy.call(this, ".prettierignore", ".prettierignore");
         }
 
         if (this.includeESLint) {
-            copy.call(this, ".eslintignore", ".eslintignore");
-            copyTemplate.call(this, ".eslintrc", ".eslintrc", templateData);
+            this._copy.call(this, ".eslintignore", ".eslintignore");
+            this._copyTemplate.call(this, ".eslintrc", ".eslintrc", templateData);
             this.fs.extendJSON(this.destinationPath(".eslintrc"), makeESLintConfig(templateData));
         }
 
@@ -133,7 +129,10 @@ module.exports = class extends YeomanGenerator {
     }
 
     // Tidy-up
-    // end() {}
+    end() {
+        this.log(`${chalk.blue("Finished generating base project files")}`);
+        this.log(`See the ${chalk.bold.italic("README.md")} file further details\n`);
+    }
 
     // Testing
     // test() {}

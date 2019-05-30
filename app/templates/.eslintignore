@@ -1,5 +1,6 @@
 # ESLint ignore settings
 # ======================
+# -- https://eslint.org/docs/user-guide/configuring#eslintignore
 
 .tmp/
 build/
