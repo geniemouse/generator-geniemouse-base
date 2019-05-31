@@ -17,10 +17,11 @@ const prompts = [
         suffix: " (Any entry will be kebab-cased)",
         default: path.basename(process.cwd()),
         filter: (str) => {
-            const nameItems = str.trim().split(usernamePattern);
+            const s = str.trim();
+            const nameItems = s.split(usernamePattern);
             const lastItem = nameItems.length - 1;
-            if (usernamePattern.test(str)) {
-                nameItems[0] = String(str.match(usernamePattern));
+            if (usernamePattern.test(s)) {
+                nameItems[0] = String(s.match(usernamePattern));
             }
             nameItems[lastItem] = kebabCase(nameItems[lastItem]);
             return nameItems.join("");
@@ -35,7 +36,7 @@ const prompts = [
         message: "Version?",
         default: "1.0.0",
         validate: (str) => {
-            return /^(\d+.){2}\d+$/.test(str);
+            return /^(\d+.){2}\d+$/.test(str.trim());
         }
     },
     {
