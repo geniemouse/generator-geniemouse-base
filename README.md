@@ -35,6 +35,7 @@ Accepting the default options ([ESLint], [Prettier], [Jest]), `geniemouse-base` 
 ├── .gitignore
 ├── .prettierignore
 ├── package.json
+├── CHANGELOG.md
 ├── README.md
 ```
 
