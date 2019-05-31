@@ -46,6 +46,7 @@ module.exports = class extends YeomanGenerator {
 
     // Asking the set-up questions
     prompting() {
+        /* istanbul ignore if */
         if (!this.options["skip-welcome-message"]) {
             this.log(
                 yosay(

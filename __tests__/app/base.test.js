@@ -21,7 +21,7 @@ describe("Base Generator (no features):", () => {
     });
 
     test("creates expected files", () => {
-        assert.file([".editorconfig", ".gitattributes", ".gitignore", "package.json", "README.md"]);
+        assert.file([".editorconfig", ".gitattributes", ".gitignore", "package.json", "CHANGELOG.md", "README.md"]);
         assert.noFile([".eslintignore", ".eslintrc", ".prettierignore"]);
     });
 

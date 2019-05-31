@@ -12,7 +12,12 @@ const files = {
      * @type {Array} of objects, e.g.
      * {input: "SOURCE_TEMPLATE_FILE", output:"DESTINATION_TEMPLATE_FILE"}
      */
-    toCopy: [],
+    toCopy: [
+        {
+            input: "CHANGELOG.md",
+            output: "CHANGELOG.md"
+        }
+    ],
 
     /**
      * Template files that need parsing with generator-captured data

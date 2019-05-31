@@ -1,0 +1,19 @@
+# Change log
+
+<!-- CHANGELOG_TEMPLATE
+
+## 0.0.0 (20YY-MM-DD)
+
+- [COMMIT_ID](COMMIT_ID_URL) BRIEF_DESCRIPTION
+- [COMMIT_ID](COMMIT_ID_URL) BRIEF_DESCRIPTION
+- [COMMIT_ID](COMMIT_ID_URL) BRIEF_DESCRIPTION
+
+-->
+
+---
+
+<!-- LINK REFERENCES -->
+
+[npm]: https://www.npmjs.com/
+
+<!-- end: LINK REFERENCES -->
