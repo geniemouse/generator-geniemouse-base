@@ -4,37 +4,56 @@ const assert = require("yeoman-assert");
 
 const app = "../../app";
 
-describe("Installing Prettier:", () => {
-    beforeAll((done) => {
-        helpers
-            .run(path.join(__dirname, app))
-            .withPrompts({ features: ["includePrettier"] })
-            .on("end", done);
-    });
-
-    test("creates expected files", () => {
-        assert.file([".prettierignore"]);
-        assert.noFile([".eslintignore", ".eslintrc"]);
-    });
-
-    describe("package.json file", () => {
-        test("scripts has the expected commands", () => {
-            assert.jsonFileContent("package.json", {
-                scripts: {
-                    lint: undefined,
-                    test: undefined
-                }
-            });
+describe("Prettier:", () => {
+    describe("On:", () => {
+        beforeAll((done) => {
+            helpers
+                .run(path.join(__dirname, app))
+                .withPrompts({
+                    features: ["includePrettier"]
+                })
+                .on("end", done);
         });
 
-        test("devDependencies has the expected packages", () => {
-            assert.jsonFileContent("package.json", {
-                devDependencies: {
-                    "@geniemouse/prettier-config": "^1.1.3",
-                    "eslint-config-prettier": undefined,
-                    "eslint-plugin-prettier": undefined,
-                    "prettier": "^1.17.1"
-                }
+        test("creates feature files", () => {
+            assert.file([".prettierignore"]);
+        });
+
+        describe("package.json file", () => {
+            test("devDependencies has the expected packages", () => {
+                assert.jsonFileContent("package.json", {
+                    devDependencies: {
+                        "@geniemouse/prettier-config": "^1.1.3",
+                        "prettier": "^1.17.1"
+                    }
+                });
+            });
+        });
+    });
+
+    describe("Off:", () => {
+        beforeAll((done) => {
+            helpers
+                .run(path.join(__dirname, app))
+                .withPrompts({
+                    features: [],
+                    includePrettier: false
+                })
+                .on("end", done);
+        });
+
+        test("does not create feature files", () => {
+            assert.noFile([".prettierignore"]);
+        });
+
+        describe("package.json file", () => {
+            test("devDependencies has the expected packages", () => {
+                assert.jsonFileContent("package.json", {
+                    devDependencies: {
+                        "@geniemouse/prettier-config": undefined,
+                        "prettier": undefined
+                    }
+                });
             });
         });
     });

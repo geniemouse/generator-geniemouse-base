@@ -8,7 +8,11 @@ describe("Base Generator (no features):", () => {
     beforeAll((done) => {
         helpers
             .run(path.join(__dirname, app))
-            .withPrompts({ description: "Lorem ipsum dolor", features: [], version: "1.1.1" })
+            .withPrompts({
+                description: "Lorem ipsum dolor",
+                features: [],
+                version: "1.1.1"
+            })
             .on("end", done);
     });
 
@@ -16,43 +20,31 @@ describe("Base Generator (no features):", () => {
         require(app);
     });
 
-    describe("file creation", () => {
-        test("creates expected files", () => {
-            assert.file([".editorconfig", ".gitattributes", ".gitignore", "package.json", "README.md"]);
-        });
-
-        test("does not create feature-dependent files", () => {
-            assert.noFile([".eslintignore", ".eslintrc", ".prettierignore"]);
-        });
+    test("creates expected files", () => {
+        assert.file([".editorconfig", ".gitattributes", ".gitignore", "package.json", "README.md"]);
+        assert.noFile([".eslintignore", ".eslintrc", ".prettierignore"]);
     });
 
-    describe("package.json file", () => {
-        test("creates expected key/values", () => {
-            assert.jsonFileContent("package.json", {
-                appname: undefined,
-                description: "Lorem ipsum dolor",
-                version: "1.1.1",
-                scripts: {
-                    lint: undefined,
-                    test: undefined
-                },
-                keywords: [],
-                author: {},
-                engines: {
-                    node: ">=6.0.0"
-                },
-                dependencies: {},
-                devDependencies: {},
-                peerDependencies: {},
-                repository: {}
-            });
-        });
-
-        test("does not create feature-dependent key/values", () => {
-            assert.noJsonFileContent("package.json", {
-                jest: {},
-                prettier: ""
-            });
+    test("package.json file has expected key/values", () => {
+        assert.jsonFileContent("package.json", {
+            appname: undefined,
+            description: "Lorem ipsum dolor",
+            version: "1.1.1",
+            scripts: {
+                lint: undefined,
+                test: undefined
+            },
+            keywords: [],
+            author: {},
+            engines: {
+                node: ">=6.0.0"
+            },
+            dependencies: {},
+            devDependencies: {},
+            peerDependencies: {},
+            repository: {},
+            jest: undefined,
+            prettier: undefined
         });
     });
 });
