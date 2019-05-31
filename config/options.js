@@ -10,7 +10,7 @@ const options = {
     "test-framework": {
         desc: "Test framework to be invoked",
         type: String,
-        default: "jest"
+        defaults: "jest"
     }
 };
 
