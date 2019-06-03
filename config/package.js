@@ -19,14 +19,13 @@ const devDependencies = {
     }
 };
 
-function setScripts(data) {
-    const { includeESLint, includeJest } = data;
+function setScripts(features) {
     const scripts = Object.assign(
         {},
-        configObject(includeESLint, {
+        configObject(features.includeESLint, {
             lint: "eslint ./"
         }),
-        configObject(includeJest, {
+        configObject(features.includeJest, {
             "test": "jest ./",
             "test:coverage": "jest ./ --coverage",
             "test:watch": "jest ./ --watchAll"
@@ -35,15 +34,14 @@ function setScripts(data) {
     return sortByKeyName(scripts);
 }
 
-function setDevDependencies(data) {
-    const { includeESLint, includePrettier, includeJest } = data;
+function setDevDependencies(features) {
     const { eslint, prettier, eslintPrettier, jest } = devDependencies;
     const collection = Object.assign(
         {},
-        configObject(includeESLint, eslint),
-        configObject(includePrettier, prettier),
-        configObject(includeESLint && includePrettier, eslintPrettier),
-        configObject(includeJest, jest)
+        configObject(features.includeESLint, eslint),
+        configObject(features.includePrettier, prettier),
+        configObject(features.includeESLint && features.includePrettier, eslintPrettier),
+        configObject(features.includeJest, jest)
     );
     // Sorting by keyname is an optional nicety;
     // consistentcy with how packages are normally listed in `package.json`
@@ -51,15 +49,16 @@ function setDevDependencies(data) {
 }
 
 module.exports = function makePackage(data) {
+    const { features } = data;
     return {
-        jest: configOrUndefined(data.includeJest, {
+        jest: configOrUndefined(features.includeJest, {
             verbose: false,
             collectCoverage: false
         }),
-        prettier: configOrUndefined(data.includePrettier, "@geniemouse/prettier-config"),
-        scripts: setScripts(data),
+        prettier: configOrUndefined(features.includePrettier, "@geniemouse/prettier-config"),
+        scripts: setScripts(features),
         dependencies: {},
-        devDependencies: setDevDependencies(data),
+        devDependencies: setDevDependencies(features),
         peerDependencies: {}
     };
 };

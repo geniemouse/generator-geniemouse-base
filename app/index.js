@@ -25,23 +25,29 @@ module.exports = class extends YeomanGenerator {
         // Don't replace Generator's parameters ;)
         super(args, opts);
 
-        // Add options, if any passed-in from command
+        // Collect all config/options flags
         Object.keys(options).map((optionName) => {
             return this.option(optionName, options[optionName]);
         });
+
+        // Collect all the possible features choices & store them
+        const featuresPrompt = prompts.find((prompt) => prompt.name === "features");
+        this.featureChoices = featuresPrompt.choices.reduce((accumulator, feature) => {
+            accumulator.push(feature.value);
+            return accumulator;
+        }, []);
+
+        this.features = {};
     }
 
 
     _getTemplateData(data) {
-        const { appname, description, friendlyname, includeESLint, includePrettier, includeJest, version } = data;
-
-        this.includeESLint = includeESLint;
-        this.includePrettier = includePrettier;
-        this.includeJest = includeJest;
+        const { appname, description, features, friendlyname, version } = data;
 
         return {
             appname,
             description,
+            features,
             friendlyname,
             version,
             // Information only
@@ -49,11 +55,7 @@ module.exports = class extends YeomanGenerator {
                 date: new Date().toISOString().split("T")[0],
                 name: generatorPackageJson.name,
                 version: generatorPackageJson.version
-            },
-            // Flags
-            includeESLint,
-            includePrettier,
-            includeJest
+            }
         };
     }
 
@@ -88,9 +90,10 @@ module.exports = class extends YeomanGenerator {
                 friendlyname: (() => {
                     return capitalize(answers.appname.replace(usernamePattern, "").replace(/-/g, " "));
                 })(),
-                includeESLint: answers.features.includes("includeESLint"),
-                includePrettier: answers.features.includes("includePrettier"),
-                includeJest: answers.features.includes("includeJest")
+                features: this.featureChoices.reduce((accumulator, feature) => {
+                    accumulator[feature] = this.features[feature] = answers.features.includes(feature);
+                    return accumulator;
+                }, {})
             };
 
             this.answers = Object.assign({}, answers, additionalData);
@@ -119,7 +122,7 @@ module.exports = class extends YeomanGenerator {
     }
 
     eslintTask() {
-        if (this.includeESLint) {
+        if (this.features.includeESLint) {
             this._copy.call(this, ".eslintignore", ".eslintignore");
             this._copyTemplate.call(this, ".eslintrc", ".eslintrc", this.templateData);
             this.fs.extendJSON(this.destinationPath(".eslintrc"), makeESLintConfig(this.templateData));
@@ -127,13 +130,13 @@ module.exports = class extends YeomanGenerator {
     }
 
     prettierTask() {
-        if (this.includePrettier) {
+        if (this.features.includePrettier) {
             this._copy.call(this, ".prettierignore", ".prettierignore");
         }
     }
 
     jestTask() {
-        if (this.includeJest) {
+        if (this.features.includeJest) {
             mkdirp("__tests__");
         }
     }
