@@ -2,6 +2,7 @@ const files = {
     /**
      * Root template files:
      * Where input/output string is identical value (i.e. no name/location change on copy step)
+     * @NOTE: feature-specific files will be handled by relevant generator tasks
      * @type {Array} of strings
      */
     root: [".editorconfig", ".gitattributes", ".gitignore"],

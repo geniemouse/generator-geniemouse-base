@@ -128,6 +128,10 @@ module.exports = class extends YeomanGenerator {
     prettierTask() {
         if (this.features.hasPrettier) {
             this._copy.call(this, ".prettierignore", ".prettierignore");
+            /* istanbul ignore else  */
+            if (this.data.prettierrc) {
+                this._copy.call(this, ".prettierrc.js", ".prettierrc.js");
+            }
         }
     }
 

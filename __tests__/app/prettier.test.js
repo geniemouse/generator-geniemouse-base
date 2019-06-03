@@ -10,13 +10,14 @@ describe("Prettier:", () => {
             helpers
                 .run(path.join(__dirname, app))
                 .withPrompts({
-                    features: ["hasPrettier"]
+                    features: ["hasPrettier"],
+                    prettierrc: true
                 })
                 .on("end", done);
         });
 
         test("creates feature files", () => {
-            assert.file([".prettierignore"]);
+            assert.file([".prettierrc.js", ".prettierignore"]);
         });
 
         describe("package.json file", () => {
@@ -37,13 +38,14 @@ describe("Prettier:", () => {
                 .run(path.join(__dirname, app))
                 .withPrompts({
                     features: [],
-                    hasPrettier: false
+                    hasPrettier: false,
+                    prettierrc: false
                 })
                 .on("end", done);
         });
 
         test("does not create feature files", () => {
-            assert.noFile([".prettierignore"]);
+            assert.noFile([".prettierrc.js", ".prettierignore"]);
         });
 
         describe("package.json file", () => {
