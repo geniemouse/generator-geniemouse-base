@@ -113,7 +113,9 @@ module.exports = class extends YeomanGenerator {
             this._copyTemplate.call(this, ".eslintrc", ".eslintrc", templateData);
             this.fs.extendJSON(this.destinationPath(".eslintrc"), makeESLintConfig(templateData));
         }
+    }
 
+    jestTask() {
         if (this.includeJest) {
             mkdirp("__tests__");
         }
