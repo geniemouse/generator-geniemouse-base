@@ -3,6 +3,8 @@ const helpers = require("yeoman-test");
 const assert = require("yeoman-assert");
 
 const app = "../../app";
+const eslintFiles = [".eslintignore", ".eslintrc"];
+const readMeHeading = "### Linting";
 
 describe("ESLint:", () => {
     describe("On:", () => {
@@ -16,7 +18,11 @@ describe("ESLint:", () => {
         });
 
         test("creates feature files", () => {
-            assert.file([".eslintignore", ".eslintrc"]);
+            assert.file(eslintFiles);
+        });
+
+        test("README file has ESLint information", () => {
+            assert.fileContent("README.md", readMeHeading);
         });
 
         test(".eslintrc file: extensions/plugins have expected values", () => {
@@ -49,9 +55,7 @@ describe("ESLint:", () => {
                     devDependencies: {
                         "eslint": "^5.16.0",
                         "eslint-config-airbnb-base": "^13.1.0",
-                        "eslint-config-prettier": undefined,
-                        "eslint-plugin-import": "^2.17.3",
-                        "eslint-plugin-prettier": undefined
+                        "eslint-plugin-import": "^2.17.3"
                     }
                 });
             });
@@ -70,7 +74,11 @@ describe("ESLint:", () => {
         });
 
         test("does not create feature files", () => {
-            assert.noFile([".eslintignore", ".eslintrc"]);
+            assert.noFile(eslintFiles);
+        });
+
+        test("README file does not include ESLint information", () => {
+            assert.noFileContent("README.md", readMeHeading);
         });
 
         describe("package.json file", () => {

@@ -3,6 +3,8 @@ const helpers = require("yeoman-test");
 const assert = require("yeoman-assert");
 
 const app = "../../app";
+const jestDirectories = ["__tests__"];
+const readMeHeading = "### Tests (Jest)";
 
 describe("Jest:", () => {
     describe("On:", () => {
@@ -16,7 +18,11 @@ describe("Jest:", () => {
         });
 
         test("creates feature files/folders", () => {
-            assert.file(["__tests__"]);
+            assert.file(jestDirectories);
+        });
+
+        test("README file has unit-testing information", () => {
+            assert.fileContent("README.md", readMeHeading);
         });
 
         describe("package.json file", () => {
@@ -52,7 +58,11 @@ describe("Jest:", () => {
         });
 
         test("does not create feature files/folders", () => {
-            assert.noFile(["__tests__"]);
+            assert.noFile(jestDirectories);
+        });
+
+        test("README file does not include unit-testing information", () => {
+            assert.noFileContent("README.md", readMeHeading);
         });
 
         describe("package.json file", () => {
