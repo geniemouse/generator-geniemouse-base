@@ -133,11 +133,14 @@ module.exports = class extends YeomanGenerator {
 
     // Tidy-up
     end() {
-        this.log(
+        /* istanbul ignore else  */
+        if (!this.options["skip-welcome-message"]) {
+            this.log(
             yosay(
                 `${chalk.blue("Finished generating base project files")}
                 See the ${chalk.bold.italic("README.md")} file further details\n`
             )
         );
+        }
     }
 };
