@@ -18,8 +18,6 @@ const { usernamePattern } = require("../utils");
 // Generator package.json (for info)
 const generatorPackageJson = require("../package.json");
 
-
-
 /**
  * Base generator
  */
@@ -68,7 +66,7 @@ module.exports = class extends YeomanGenerator {
             accumulator[feature] = features.includes(feature);
             this.features[feature] = accumulator[feature];
             return accumulator;
-        }, {})
+        }, {});
     }
 
     // Asking the set-up questions
@@ -156,11 +154,11 @@ module.exports = class extends YeomanGenerator {
         /* istanbul ignore else  */
         if (!this.options["skip-welcome-message"]) {
             this.log(
-            yosay(
-                `${chalk.blue("Finished generating base project files")}
-                See the ${chalk.bold.italic("README.md")} file further details\n`
-            )
-        );
+                yosay(
+                    `${chalk.blue("Finished generating base project files")}
+                    See the ${chalk.bold.italic("README.md")} file further details\n`
+                )
+            );
         }
     }
 };
