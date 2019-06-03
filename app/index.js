@@ -104,14 +104,16 @@ module.exports = class extends YeomanGenerator {
 
         this.fs.extendJSON(this.destinationPath("package.json"), makePackage(templateData));
 
-        if (this.includePrettier) {
-            this._copy.call(this, ".prettierignore", ".prettierignore");
-        }
-
         if (this.includeESLint) {
             this._copy.call(this, ".eslintignore", ".eslintignore");
             this._copyTemplate.call(this, ".eslintrc", ".eslintrc", templateData);
             this.fs.extendJSON(this.destinationPath(".eslintrc"), makeESLintConfig(templateData));
+        }
+    }
+
+    prettierTask() {
+        if (this.includePrettier) {
+            this._copy.call(this, ".prettierignore", ".prettierignore");
         }
     }
 
