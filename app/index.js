@@ -42,21 +42,18 @@ module.exports = class extends YeomanGenerator {
 
 
     _getTemplateData(data) {
-        const { appname, description, features, friendlyname, version } = data;
-
-        return {
-            appname,
-            description,
-            features,
-            friendlyname,
-            version,
-            // Information only
-            generator: {
-                date: new Date().toISOString().split("T")[0],
-                name: generatorPackageJson.name,
-                version: generatorPackageJson.version
+        return Object.assign(
+            data,
+            // Information only:
+            // could be useful in debugging or in README template
+            {
+                generator: {
+                    date: new Date().toISOString().split("T")[0],
+                    name: generatorPackageJson.name,
+                    version: generatorPackageJson.version
+                }
             }
-        };
+        );
     }
 
     _copy(input, output) {
