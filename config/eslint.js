@@ -19,10 +19,10 @@ function setPlugins(prettier) {
 }
 
 module.exports = function makeESlintConfig(data) {
-    const { includeJest, includePrettier } = data.features;
+    const { hasJest, hasPrettier } = data.features;
     return {
-        env: setEnv(includeJest),
-        extends: setExtends(includePrettier),
-        plugins: setPlugins(includePrettier)
+        env: setEnv(hasJest),
+        extends: setExtends(hasPrettier),
+        plugins: setPlugins(hasPrettier)
     };
 };

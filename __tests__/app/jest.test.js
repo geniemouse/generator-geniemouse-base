@@ -10,7 +10,7 @@ describe("Jest:", () => {
             helpers
                 .run(path.join(__dirname, app))
                 .withPrompts({
-                    features: ["includeJest"]
+                    features: ["hasJest"]
                 })
                 .on("end", done);
         });
@@ -46,7 +46,7 @@ describe("Jest:", () => {
                 .run(path.join(__dirname, app))
                 .withPrompts({
                     features: [],
-                    includeJest: false
+                    hasJest: false
                 })
                 .on("end", done);
         });

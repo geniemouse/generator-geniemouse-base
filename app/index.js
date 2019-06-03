@@ -118,7 +118,7 @@ module.exports = class extends YeomanGenerator {
     }
 
     eslintTask() {
-        if (this.features.includeESLint) {
+        if (this.features.hasESLint) {
             this._copy.call(this, ".eslintignore", ".eslintignore");
             this._copyTemplate.call(this, ".eslintrc", ".eslintrc", this.data);
             this.fs.extendJSON(this.destinationPath(".eslintrc"), makeESLintConfig(this.data));
@@ -126,13 +126,13 @@ module.exports = class extends YeomanGenerator {
     }
 
     prettierTask() {
-        if (this.features.includePrettier) {
+        if (this.features.hasPrettier) {
             this._copy.call(this, ".prettierignore", ".prettierignore");
         }
     }
 
     jestTask() {
-        if (this.features.includeJest) {
+        if (this.features.hasJest) {
             mkdirp("__tests__");
         }
     }

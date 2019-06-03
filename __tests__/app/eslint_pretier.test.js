@@ -10,7 +10,7 @@ describe("ESLint & Prettier:", () => {
             helpers
                 .run(path.join(__dirname, app))
                 .withPrompts({
-                    features: ["includeESLint", "includePrettier"]
+                    features: ["hasESLint", "hasPrettier"]
                 })
                 .on("end", done);
         });
@@ -50,8 +50,8 @@ describe("ESLint & Prettier:", () => {
                 .run(path.join(__dirname, app))
                 .withPrompts({
                     features: [],
-                    includeESLint: false,
-                    includePrettier: false
+                    hasESLint: false,
+                    hasPrettier: false
                 })
                 .on("end", done);
         });

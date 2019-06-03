@@ -10,7 +10,7 @@ describe("Prettier:", () => {
             helpers
                 .run(path.join(__dirname, app))
                 .withPrompts({
-                    features: ["includePrettier"]
+                    features: ["hasPrettier"]
                 })
                 .on("end", done);
         });
@@ -37,7 +37,7 @@ describe("Prettier:", () => {
                 .run(path.join(__dirname, app))
                 .withPrompts({
                     features: [],
-                    includePrettier: false
+                    hasPrettier: false
                 })
                 .on("end", done);
         });

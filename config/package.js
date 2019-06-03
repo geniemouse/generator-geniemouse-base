@@ -22,10 +22,10 @@ const devDependencies = {
 function setScripts(features) {
     const scripts = Object.assign(
         {},
-        configObject(features.includeESLint, {
+        configObject(features.hasESLint, {
             lint: "eslint ./"
         }),
-        configObject(features.includeJest, {
+        configObject(features.hasJest, {
             "test": "jest ./",
             "test:coverage": "jest ./ --coverage",
             "test:watch": "jest ./ --watchAll"
@@ -38,10 +38,10 @@ function setDevDependencies(features) {
     const { eslint, prettier, eslintPrettier, jest } = devDependencies;
     const collection = Object.assign(
         {},
-        configObject(features.includeESLint, eslint),
-        configObject(features.includePrettier, prettier),
-        configObject(features.includeESLint && features.includePrettier, eslintPrettier),
-        configObject(features.includeJest, jest)
+        configObject(features.hasESLint, eslint),
+        configObject(features.hasPrettier, prettier),
+        configObject(features.hasESLint && features.hasPrettier, eslintPrettier),
+        configObject(features.hasJest, jest)
     );
     // Sorting by keyname is an optional nicety;
     // consistentcy with how packages are normally listed in `package.json`
@@ -51,11 +51,11 @@ function setDevDependencies(features) {
 module.exports = function makePackage(data) {
     const { features } = data;
     return {
-        jest: configOrUndefined(features.includeJest, {
+        jest: configOrUndefined(features.hasJest, {
             verbose: false,
             collectCoverage: false
         }),
-        prettier: configOrUndefined(features.includePrettier, "@geniemouse/prettier-config"),
+        prettier: configOrUndefined(features.hasPrettier, "@geniemouse/prettier-config"),
         scripts: setScripts(features),
         dependencies: {},
         devDependencies: setDevDependencies(features),
