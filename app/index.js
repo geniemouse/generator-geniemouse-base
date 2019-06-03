@@ -6,16 +6,19 @@ const { capitalize } = require("lodash");
 const mkdirp = require("mkdirp");
 const yosay = require("yosay");
 
-// Import local files
-const { usernamePattern } = require("../utils");
+// Import local files...
+// Config files:
 const files = require("../config/files");
 const makeESLintConfig = require("../config/eslint");
 const makePackage = require("../config/package");
 const options = require("../config/options");
 const prompts = require("../config/prompts");
-
-// The generator package.json
+// Utils
+const { usernamePattern } = require("../utils");
+// Generator package.json (for info)
 const generatorPackageJson = require("../package.json");
+
+
 
 /**
  * Base generator
@@ -25,11 +28,17 @@ module.exports = class extends YeomanGenerator {
         // Don't replace Generator's parameters ;)
         super(args, opts);
 
-        // Collect all config/options flags
+        // Generator running with current options flags...
         Object.keys(options).map((optionName) => {
             return this.option(optionName, options[optionName]);
         });
 
+        /**
+         * Automatically collect all the code features options;
+         * no need to add these manually to the generator code
+         * @param  {Array} featuresQuestion
+         * @return {Array}
+         */
         function getAllFeaturesChoices(featuresQuestion) {
             return featuresQuestion.choices.reduce((accumulator, feature) => {
                 accumulator.push(feature.value);
@@ -37,7 +46,6 @@ module.exports = class extends YeomanGenerator {
             }, []);
         }
 
-        // Collect all the possible features choices & store them
         const featuresPrompt = prompts.find((prompt) => prompt.name === "features");
         this.featureChoices = getAllFeaturesChoices(featuresPrompt);
         this.features = {};
@@ -94,23 +102,20 @@ module.exports = class extends YeomanGenerator {
         });
     }
 
-    // Directories & files; including parsing data into them
     writing() {
         // Root files (straight copying task)
         files.root.forEach((file) => {
             this._copy.call(this, file, file);
         });
-
-        // Copy files from one location to another
+        // Copy files from one location/filename to another
         files.toCopy.forEach((file) => {
             this._copy.call(this, file.input, file.output);
         });
-
-        // Files to parse before copying over
+        // Files to parse with data before copying over
         files.toParse.forEach((file) => {
             this._copyTemplate.call(this, file.input, file.output, this.data);
         });
-
+        // Create package.json
         this.fs.extendJSON(this.destinationPath("package.json"), makePackage(this.data));
     }
 
