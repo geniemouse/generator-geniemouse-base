@@ -89,11 +89,11 @@ const prompts = [
         name: "directories",
         message: "Initial directories:",
         suffix: " (Comma-separated list, nested directories separated by /)",
-        default: ["app"],
         store: true,
         filter: (dirs) => {
             if (typeof dirs === "string") {
-                return dirs.split(",").map((dir) => dir.trim());
+                const dirsStr = dirs.trim();
+                return dirsStr.length ? dirsStr.split(",").map((dir) => dir.trim()) : [];
             }
             return dirs;
         }

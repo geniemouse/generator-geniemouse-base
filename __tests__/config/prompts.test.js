@@ -1,8 +1,9 @@
 const path = require("path");
+
 const prompts = require("../../config/prompts");
 
 const currentRootDirectory = path.basename(process.cwd());
-const { appname, directories, version } = prompts.reduce((result, item) => {
+const { appname, directories, prettierrc, version } = prompts.reduce((result, item) => {
     result[item.name] = item;
     return result;
 }, {});
@@ -50,12 +51,25 @@ describe("Config/Prompts:", () => {
         });
     });
 
+    describe("prettierrc:", () => {
+        test("prettierrc input to be stored", () => {
+            expect(prettierrc.default).toBe(undefined);
+            expect(prettierrc.store).toBe(true);
+        });
+    });
+
     describe("directories:", () => {
-        test("default is ['app']", () => {
-            expect(directories.default).toStrictEqual(["app"]);
+        test("directory input to be stored", () => {
+            expect(directories.default).toBe(undefined);
+            expect(directories.store).toBe(true);
         });
 
-        test("filters correctly", () => {
+        test("filtering an empty string returns empty array", () => {
+            expect(directories.filter("")).toStrictEqual([]);
+            expect(directories.filter("   ")).toStrictEqual([]);
+        });
+
+        test("filters both strings & array inputs correctly", () => {
             const expectedResult = ["one", "two/sub", "three"];
             expect(directories.filter("one, two/sub, three")).toStrictEqual(expectedResult);
             expect(directories.filter(expectedResult)).toStrictEqual(expectedResult);
