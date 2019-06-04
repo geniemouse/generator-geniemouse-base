@@ -101,11 +101,13 @@ module.exports = class extends YeomanGenerator {
     }
 
     writing() {
-        // Root files (straight copying task)
+        // Root files:
+        // straight copying task, identical location & filename
         files.root.forEach((file) => {
             this._copy.call(this, file, file);
         });
-        // Copy files from one location/filename to another
+        // Copy files:
+        // input/output differ either by location or filename
         files.toCopy.forEach((file) => {
             this._copy.call(this, file.input, file.output);
         });

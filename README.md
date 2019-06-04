@@ -27,16 +27,19 @@ Accepting the default options ([ESLint], [Prettier], [Jest]), `geniemouse-base` 
 
 ```
 .
-├── __tests__/
+├── __tests__/ *
 ├── .editorconfig
-├── .eslintignore
-├── .eslintrc
+├── .eslintignore *
+├── .eslintrc *
 ├── .gitattributes
 ├── .gitignore
-├── .prettierignore
+├── .prettierrc.js *
+├── .prettierignore *
 ├── package.json
 ├── CHANGELOG.md
-├── README.md
+└── README.md
+
+* Installed only if related package is.
 ```
 
 ---
@@ -78,6 +81,7 @@ yo geniemouse-base
 ## Related links
 
 -   Read more about [Yeoman generators]?
+-   Full [Yeoman API]
 
 <!-- LINK REFERENCES -->
 
@@ -85,6 +89,7 @@ yo geniemouse-base
 [jest]: https://jestjs.io/
 [prettier]: https://prettier.io/
 [yeoman]: https://yeoman.io/
+[yeoman api]: https://yeoman.github.io/generator/
 [yeoman generators]: https://yeoman.io/generators/
 
 <!-- end: LINK REFERENCES -->
