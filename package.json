@@ -2,7 +2,6 @@
   "name": "generator-geniemouse-base",
   "version": "1.0.0",
   "description": "A Yeoman generator for producing base project structure and configuration files.",
-  "private": true,
   "main": "app/index.js",
   "scripts": {
     "lint": "eslint ./",
