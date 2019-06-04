@@ -80,6 +80,23 @@ const prompts = [
         suffix: " (For overriding bundled Prettier config rules)",
         store: true,
         when: (answers) => answers.features.includes("hasPrettier")
+    },
+    /**
+     * Initial project directories
+     */
+    {
+        type: "input",
+        name: "directories",
+        message: "Initial directories:",
+        suffix: " (Comma-separated list, nested directories separated by /)",
+        default: ["app"],
+        store: true,
+        filter: (dirs) => {
+            if (typeof dirs === "string") {
+                return dirs.split(",").map((dir) => dir.trim());
+            }
+            return dirs;
+        }
     }
 ];
 

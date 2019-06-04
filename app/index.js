@@ -49,6 +49,12 @@ module.exports = class extends YeomanGenerator {
         this.features = {};
     }
 
+    _createDirectory(dir) {
+        return mkdirp(dir, (err) => {
+            return this.log(err || `${chalk.green("create directory")} ${dir}`);
+        });
+    }
+
     _copy(input, output) {
         return this.fs.copy(this.templatePath(input), this.destinationPath(output));
     }
@@ -96,6 +102,7 @@ module.exports = class extends YeomanGenerator {
                 }
             };
 
+            this.directories = answers.directories;
             this.data = Object.assign({}, answers, additionalData);
         });
     }
@@ -139,8 +146,14 @@ module.exports = class extends YeomanGenerator {
 
     jestTask() {
         if (this.features.hasJest) {
-            mkdirp("__tests__");
+            this._createDirectory("__tests__");
         }
+    }
+
+    directoriesTask() {
+        this.directories.forEach((dir) => {
+            this._createDirectory(dir);
+        });
     }
 
     // Run the package install

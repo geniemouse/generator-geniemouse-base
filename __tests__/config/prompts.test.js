@@ -2,7 +2,7 @@ const path = require("path");
 const prompts = require("../../config/prompts");
 
 const currentRootDirectory = path.basename(process.cwd());
-const { appname, version } = prompts.reduce((result, item) => {
+const { appname, directories, version } = prompts.reduce((result, item) => {
     result[item.name] = item;
     return result;
 }, {});
@@ -47,6 +47,18 @@ describe("Config/Prompts:", () => {
             expect(version.validate("1.1.2")).toBe(true);
             expect(version.validate("  1.1.2  ")).toBe(true);
             expect(version.validate("100.155.299")).toBe(true);
+        });
+    });
+
+    describe("directories:", () => {
+        test("default is ['app']", () => {
+            expect(directories.default).toStrictEqual(["app"]);
+        });
+
+        test("filters correctly", () => {
+            const expectedResult = ["one", "two/sub", "three"];
+            expect(directories.filter("one, two/sub, three")).toStrictEqual(expectedResult);
+            expect(directories.filter(expectedResult)).toStrictEqual(expectedResult);
         });
     });
 });
