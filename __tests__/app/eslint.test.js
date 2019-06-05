@@ -12,6 +12,7 @@ describe("ESLint:", () => {
             helpers
                 .run(path.join(__dirname, app))
                 .withPrompts({
+                    directories: [],
                     features: ["hasESLint"]
                 })
                 .on("end", done);
@@ -67,6 +68,7 @@ describe("ESLint:", () => {
             helpers
                 .run(path.join(__dirname, app))
                 .withPrompts({
+                    directories: [],
                     features: [],
                     hasESLint: false
                 })

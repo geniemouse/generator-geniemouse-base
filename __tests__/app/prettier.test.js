@@ -10,6 +10,7 @@ describe("Prettier:", () => {
             helpers
                 .run(path.join(__dirname, app))
                 .withPrompts({
+                    directories: [],
                     features: ["hasPrettier"],
                     prettierrc: true
                 })
@@ -37,6 +38,7 @@ describe("Prettier:", () => {
             helpers
                 .run(path.join(__dirname, app))
                 .withPrompts({
+                    directories: [],
                     features: [],
                     hasPrettier: false,
                     prettierrc: false

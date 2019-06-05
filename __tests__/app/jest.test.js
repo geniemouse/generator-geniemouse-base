@@ -12,6 +12,7 @@ describe("Jest:", () => {
             helpers
                 .run(path.join(__dirname, app))
                 .withPrompts({
+                    directories: [],
                     features: ["hasJest"]
                 })
                 .on("end", done);
@@ -51,6 +52,7 @@ describe("Jest:", () => {
             helpers
                 .run(path.join(__dirname, app))
                 .withPrompts({
+                    directories: [],
                     features: [],
                     hasJest: false
                 })
