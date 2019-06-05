@@ -1,0 +1,8 @@
+{
+    "generator-geniemouse-base": {
+        "promptValues": {
+            "prettierrc": false,
+            "directories": ["app"]
+        }
+    }
+}
