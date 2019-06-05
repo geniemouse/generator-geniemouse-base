@@ -6,15 +6,15 @@ const { capitalize } = require("lodash");
 const mkdirp = require("mkdirp");
 const yosay = require("yosay");
 
-// Import local files...
-// Config files:
-const files = require("../config/files");
+// Config files
 const makeESLintConfig = require("../config/eslint");
 const makePackage = require("../config/package");
 const options = require("../config/options");
 const prompts = require("../config/prompts");
+
 // Utils
 const { usernamePattern } = require("../utils");
+
 // Generator package.json (for info)
 const generatorPackageJson = require("../package.json");
 
@@ -30,6 +30,40 @@ module.exports = class extends YeomanGenerator {
         Object.keys(options).map((optionName) => {
             return this.option(optionName, options[optionName]);
         });
+    }
+
+    _createDirectory(dir) {
+        return mkdirp(dir, (err) => {
+            return this.log(err || `${chalk.green("create directory")} ${dir}`);
+        });
+    }
+
+    _setFriendlyName(str) {
+        return capitalize(str.replace(usernamePattern, "").replace(/-/g, " "));
+    }
+
+    _setFeatureFlags(features) {
+        return this.featureChoices.reduce((accumulator, feature) => {
+            accumulator[feature] = features.includes(feature);
+            this.features[feature] = accumulator[feature];
+            return accumulator;
+        }, {});
+    }
+
+    // Step 1: INITIALIZING
+    // --------------------
+    // Your initialization methods (checking current project state, getting configs, etc)
+    initializing() {
+        /* istanbul ignore else  */
+        if (!this.options["skip-welcome-message"]) {
+            this.log(
+                yosay(
+                    `'Allo 'allo! Out of the box, I include
+                    ${chalk.green(".editorconfig")}, ${chalk.green(".gitattributes")}
+                    & ${chalk.green(".gitignore")} files. Nice and simple!`
+                )
+            );
+        }
 
         /**
          * Automatically collect all the code features options;
@@ -47,47 +81,15 @@ module.exports = class extends YeomanGenerator {
         const featuresPrompt = prompts.find((prompt) => prompt.name === "features");
         this.featureChoices = getAllFeaturesChoices(featuresPrompt);
         this.features = {};
+        this.directories = [];
+        this.data = {};
     }
 
-    _createDirectory(dir) {
-        return mkdirp(dir, (err) => {
-            return this.log(err || `${chalk.green("create directory")} ${dir}`);
-        });
-    }
-
-    _copy(input, output) {
-        return this.fs.copy(this.templatePath(input), this.destinationPath(output));
-    }
-
-    _copyTemplate(input, output, data) {
-        return this.fs.copyTpl(this.templatePath(input), this.destinationPath(output), data);
-    }
-
-    _setFriendlyName(str) {
-        return capitalize(str.replace(usernamePattern, "").replace(/-/g, " "));
-    }
-
-    _setFeatureFlags(features) {
-        return this.featureChoices.reduce((accumulator, feature) => {
-            accumulator[feature] = features.includes(feature);
-            this.features[feature] = accumulator[feature];
-            return accumulator;
-        }, {});
-    }
-
-    // Asking the set-up questions
+    // Step 2: PROMPTING
+    // -----------------
+    // Where you prompt users for options (where you’d call this.prompt())
+    // @NOTE: this.prompt() can be called in other places too
     prompting() {
-        /* istanbul ignore else  */
-        if (!this.options["skip-welcome-message"]) {
-            this.log(
-                yosay(
-                    `'Allo 'allo! Out of the box, I include
-                    ${chalk.green(".editorconfig")}, ${chalk.green(".gitattributes")}
-                    & ${chalk.green(".gitignore")} files. Nice and simple!`
-                )
-            );
-        }
-
         return this.prompt(prompts).then((answers) => {
             const additionalData = {
                 friendlyname: this._setFriendlyName(answers.appname),
@@ -107,39 +109,36 @@ module.exports = class extends YeomanGenerator {
         });
     }
 
-    writing() {
-        // Root files:
-        // straight copying task, identical location & filename
-        files.root.forEach((file) => {
-            this._copy.call(this, file, file);
+    // Step 3: CONFIGURING
+    // -------------------
+    // Saving configurations and configure the project
+    // (creating .editorconfig files and other metadata files
+    configuring() {
+        const rootFiles = [".editorconfig", ".gitattributes", ".gitignore", "CHANGELOG.md"];
+        rootFiles.forEach((file) => {
+            this.fs.copy(this.templatePath(file), this.destinationPath(file));
         });
-        // Copy files:
-        // input/output differ either by location or filename
-        files.toCopy.forEach((file) => {
-            this._copy.call(this, file.input, file.output);
-        });
-        // Files to parse with data before copying over
-        files.toParse.forEach((file) => {
-            this._copyTemplate.call(this, file.input, file.output, this.data);
-        });
-        // Create package.json
-        this.fs.extendJSON(this.destinationPath("package.json"), makePackage(this.data));
     }
+
+    // Step 4: DEFAULT
+    // ---------------
+    // If the method name doesn’t match a priority, it will be pushed to this group.
+    // default() {}
 
     eslintTask() {
         if (this.features.hasESLint) {
-            this._copy.call(this, ".eslintignore", ".eslintignore");
-            this._copyTemplate.call(this, ".eslintrc", ".eslintrc", this.data);
+            this.fs.copy(this.templatePath(".eslintignore"), this.destinationPath(".eslintignore"));
+            this.fs.copyTpl(this.templatePath(".eslintrc"), this.destinationPath(".eslintrc"), this.data);
             this.fs.extendJSON(this.destinationPath(".eslintrc"), makeESLintConfig(this.data));
         }
     }
 
     prettierTask() {
         if (this.features.hasPrettier) {
-            this._copy.call(this, ".prettierignore", ".prettierignore");
+            this.fs.copy(this.templatePath(".prettierignore"), this.destinationPath(".prettierignore"));
             /* istanbul ignore else  */
             if (this.data.prettierrc) {
-                this._copy.call(this, ".prettierrc.js", ".prettierrc.js");
+                this.fs.copy(this.templatePath(".prettierrc.js"), this.destinationPath(".prettierrc.js"));
             }
         }
     }
@@ -156,7 +155,31 @@ module.exports = class extends YeomanGenerator {
         });
     }
 
-    // Run the package install
+    // Step 5: WRITING
+    // ---------------
+    // Where you write the generator specific files (routes, controllers, etc)
+    writing() {
+        // If this base generator is composed into another, there might be an
+        // existing package.json file that we will need to merge with.
+        // Store its contents into memory.
+        const pkg = this.fs.readJSON(this.destinationPath("package.json"), {});
+        this.fs.copyTpl(this.templatePath("_package.json"), this.destinationPath("package.json"), this.data);
+        this.fs.copyTpl(this.templatePath("_README.md"), this.destinationPath("README.md"), this.data);
+        // Create/Merge package.json with any extra data
+        this.fs.extendJSON(this.destinationPath("package.json"), makePackage(this.data));
+        this.fs.extendJSON(this.destinationPath("package.json"), pkg);
+    }
+
+    // Step 6: CONFLICTS
+    // -----------------
+    // Where conflicts are handled (used internally)
+    // conflicts() {}
+
+    // Step 7: INSTALL
+    // ---------------
+    // Where installations are run (npm, yarn, bower)
+    // No matter how many generators are linked, or how many install calls in methods,
+    // Yeoman collects & calls install once
     install() {
         const hasYarn = commandExists("yarn");
         this.installDependencies({
@@ -168,7 +191,9 @@ module.exports = class extends YeomanGenerator {
         });
     }
 
-    // Tidy-up
+    // Step 8: END
+    // -----------
+    // Called last, cleanup, say good bye, etc
     end() {
         /* istanbul ignore else  */
         if (!this.options["skip-welcome-message"]) {
