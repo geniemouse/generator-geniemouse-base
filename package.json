@@ -59,7 +59,7 @@
     "yeoman-test": "^2.0.0"
   },
   "peerDependencies": {
-    "yo": ">=2.0.6"
+    "yo": ">=2.0.0"
   },
   "repository": {
     "type": "git",
