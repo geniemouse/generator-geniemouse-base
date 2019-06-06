@@ -2,6 +2,7 @@
 const YeomanGenerator = require("yeoman-generator");
 const chalk = require("chalk");
 const commandExists = require("command-exists").sync;
+const yosay = require("yosay");
 
 // Config files
 const options = require("../config/options");
@@ -26,7 +27,7 @@ module.exports = class extends YeomanGenerator {
     initializing() {
         /* istanbul ignore else  */
         if (!this.options.isBase) {
-            this.log(`${chalk.blue("Installing eslint")}`);
+            this.log(yosay(`${chalk.blue("Installing ESLint to this project location")}`));
         }
 
         this.features = this.options.features || {};
@@ -42,19 +43,19 @@ module.exports = class extends YeomanGenerator {
             return this.prompt([
                 {
                     type: "confirm",
-                    name: "jest",
+                    name: "eslint:hasJest",
                     message: "Add ESLint support for Jest?",
                     store: true
                 },
                 {
                     type: "confirm",
-                    name: "prettier",
+                    name: "eslint:hasPrettier",
                     message: "Add ESLint support for Prettier?",
                     store: true
                 }
             ]).then((answers) => {
-                this.features.hasJest = answers.jest;
-                this.features.hasPrettier = answers.prettier;
+                this.features.hasJest = answers["eslint:hasJest"];
+                this.features.hasPrettier = answers["eslint:hasPrettier"];
             });
         }
     }

@@ -15,8 +15,8 @@ describe("ESLint Sub-Generator:", () => {
                     isBase: undefined
                 })
                 .withPrompts({
-                    jest: false,
-                    prettier: false
+                    "eslint:hasJest": false,
+                    "eslint:hasPrettier": false
                 })
                 .on("end", done);
         });
