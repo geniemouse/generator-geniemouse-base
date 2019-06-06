@@ -2,7 +2,7 @@ const path = require("path");
 const assert = require("yeoman-assert");
 const helpers = require("yeoman-test");
 
-const app = "../../app";
+const app = "../app";
 
 describe("Base Generator (no features):", () => {
     beforeAll((done) => {

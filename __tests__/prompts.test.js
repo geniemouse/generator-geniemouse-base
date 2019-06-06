@@ -1,6 +1,6 @@
 const path = require("path");
 
-const prompts = require("../../config/prompts");
+const prompts = require("../config/prompts");
 
 const currentRootDirectory = path.basename(process.cwd());
 const { appname, directories, prettierrc, version } = prompts.reduce((result, item) => {
