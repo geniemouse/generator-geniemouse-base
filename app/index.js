@@ -7,12 +7,11 @@ const mkdirp = require("mkdirp");
 const yosay = require("yosay");
 
 // Config files
-const makePackage = require("../config/package");
 const options = require("../config/options");
 const prompts = require("../config/prompts");
 
 // Utils
-const { usernamePattern } = require("../utils");
+const { mergeJSON, usernamePattern } = require("../utils");
 
 // Generator package.json (for info)
 const generatorPackageJson = require("../package.json");
@@ -127,17 +126,19 @@ module.exports = class extends YeomanGenerator {
     eslintTask() {
         if (this.features.hasESLint) {
             this.composeWith(require.resolve("../eslint"), {
-                "features": this.features,
+                "features": this.feature,
                 "isBase": true,
                 "skip-install": this.options["skip-install"]
             });
         }
     }
 
+    // @TODO: Move to composeWith wehn sub-generator is ready
+    // @NOTE: Certain Prettier tests have been turned off until this occurs
     prettierTask() {
         if (this.features.hasPrettier) {
             this.fs.copy(this.templatePath(".prettierignore"), this.destinationPath(".prettierignore"));
-            /* istanbul ignore else  */
+            /* istanbul ignore else */
             if (this.data.prettierrc) {
                 this.fs.copy(this.templatePath(".prettierrc.js"), this.destinationPath(".prettierrc.js"));
             }
@@ -146,7 +147,10 @@ module.exports = class extends YeomanGenerator {
 
     jestTask() {
         if (this.features.hasJest) {
-            this._createDirectory("__tests__");
+            this.composeWith(require.resolve("../jest"), {
+                "isBase": true,
+                "skip-install": this.options["skip-install"]
+            });
         }
     }
 
@@ -160,15 +164,8 @@ module.exports = class extends YeomanGenerator {
     // ---------------
     // Where you write the generator specific files (routes, controllers, etc)
     writing() {
-        // If this base generator is composed into another, there might be an
-        // existing package.json file that we will need to merge with.
-        // Store its contents into memory.
-        const pkg = this.fs.readJSON(this.destinationPath("package.json"), {});
-        this.fs.copyTpl(this.templatePath("_package.json"), this.destinationPath("package.json"), this.data);
         this.fs.copyTpl(this.templatePath("_README.md"), this.destinationPath("README.md"), this.data);
-        // Create/Merge package.json with any extra data
-        this.fs.extendJSON(this.destinationPath("package.json"), makePackage(this.data));
-        this.fs.extendJSON(this.destinationPath("package.json"), pkg);
+        mergeJSON.call(this, { input: "_package.json", output: "package.json", data: this.data });
     }
 
     // Step 6: CONFLICTS

@@ -1,0 +1,14 @@
+{
+  "devDependencies": {
+    "jest": "^24.8.0"
+  },
+  "jest": {
+    "verbose": false,
+    "collectCoverage": false
+  },
+  "scripts": {
+    "test": "jest ./",
+    "test:coverage": "jest ./ --coverage",
+    "test:watch": "jest ./ --watchAll"
+  }
+}

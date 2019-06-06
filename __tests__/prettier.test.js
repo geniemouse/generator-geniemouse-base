@@ -21,16 +21,16 @@ describe("Prettier:", () => {
             assert.file([".prettierrc.js", ".prettierignore"]);
         });
 
-        describe("package.json file", () => {
-            test("devDependencies has the expected packages", () => {
-                assert.jsonFileContent("package.json", {
-                    devDependencies: {
-                        "@geniemouse/prettier-config": "^1.1.3",
-                        "prettier": "^1.17.1"
-                    }
-                });
-            });
-        });
+        // describe("package.json file", () => {
+        //     test("devDependencies has the expected packages", () => {
+        //         assert.jsonFileContent("package.json", {
+        //             devDependencies: {
+        //                 "@geniemouse/prettier-config": "^1.1.3",
+        //                 "prettier": "^1.17.1"
+        //             }
+        //         });
+        //     });
+        // });
     });
 
     describe("Off:", () => {
@@ -50,15 +50,15 @@ describe("Prettier:", () => {
             assert.noFile([".prettierrc.js", ".prettierignore"]);
         });
 
-        describe("package.json file", () => {
-            test("devDependencies has the expected packages", () => {
-                assert.jsonFileContent("package.json", {
-                    devDependencies: {
-                        "@geniemouse/prettier-config": undefined,
-                        "prettier": undefined
-                    }
-                });
-            });
-        });
+        // describe("package.json file", () => {
+        //     test("devDependencies has the expected packages", () => {
+        //         assert.jsonFileContent("package.json", {
+        //             devDependencies: {
+        //                 "@geniemouse/prettier-config": undefined,
+        //                 "prettier": undefined
+        //             }
+        //         });
+        //     });
+        // });
     });
 });
