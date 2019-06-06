@@ -14,6 +14,10 @@ describe("ESLint Sub-Generator:", () => {
                     features: undefined,
                     isBase: undefined
                 })
+                .withPrompts({
+                    jest: false,
+                    prettier: false
+                })
                 .on("end", done);
         });
 

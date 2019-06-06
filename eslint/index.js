@@ -36,7 +36,28 @@ module.exports = class extends YeomanGenerator {
     // -----------------
     // Where you prompt users for options (where you’d call this.prompt())
     // @NOTE: this.prompt() can be called in other places too
-    // prompting() {}
+    prompting() {
+        /* istanbul ignore else  */
+        if (!this.options.isBase) {
+            return this.prompt([
+                {
+                    type: "confirm",
+                    name: "jest",
+                    message: "Add ESLint support for Jest?",
+                    store: true
+                },
+                {
+                    type: "confirm",
+                    name: "prettier",
+                    message: "Add ESLint support for Prettier?",
+                    store: true
+                }
+            ]).then((answers) => {
+                this.features.hasJest = answers.jest;
+                this.features.hasPrettier = answers.prettier;
+            });
+        }
+    }
 
     // Step 3: CONFIGURING
     // -------------------
