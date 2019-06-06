@@ -133,15 +133,13 @@ module.exports = class extends YeomanGenerator {
         }
     }
 
-    // @TODO: Move to composeWith wehn sub-generator is ready
-    // @NOTE: Certain Prettier tests have been turned off until this occurs
     prettierTask() {
         if (this.features.hasPrettier) {
-            this.fs.copy(this.templatePath(".prettierignore"), this.destinationPath(".prettierignore"));
-            /* istanbul ignore else */
-            if (this.data.prettierrc) {
-                this.fs.copy(this.templatePath(".prettierrc.js"), this.destinationPath(".prettierrc.js"));
-            }
+            this.composeWith(require.resolve("../prettier"), {
+                "isBase": true,
+                "prettierrc": this.data.prettierrc,
+                "skip-install": this.options["skip-install"]
+            });
         }
     }
 

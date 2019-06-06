@@ -11,7 +11,7 @@ const options = require("../config/options");
 const { createDirectory, mergeJSON } = require("../utils");
 
 /**
- * Jest sub-generator
+ * Prettier sub-generator
  */
 module.exports = class extends YeomanGenerator {
     constructor(args, opts) {
@@ -30,23 +30,43 @@ module.exports = class extends YeomanGenerator {
     initializing() {
         /* istanbul ignore else  */
         if (!this.options.isBase) {
-            this.log(yosay(`${chalk.blue("Installing Jest to this project location")}`));
+            this.log(yosay(`${chalk.blue("Installing Prettier to this project location")}`));
         }
+
+        this.prettierrc = this.options.prettierrc;
     }
 
     // Step 2: PROMPTING
     // -----------------
     // Where you prompt users for options (where you’d call this.prompt())
     // @NOTE: this.prompt() can be called in other places too
-    // prompting() {}
+    prompting() {
+        /* istanbul ignore else  */
+        if (!this.options.isBase) {
+            return this.prompt([
+                {
+                    type: "confirm",
+                    name: "prettier:prettierrc",
+                    message: "Would you like a .prettierrc.js file to be created?",
+                    suffix: " (For overriding bundled Prettier config rules)",
+                    store: true
+                }
+            ]).then((answers) => {
+                this.prettierrc = answers["prettier:prettierrc"];
+            });
+        }
+    }
 
     // Step 3: CONFIGURING
     // -------------------
     // Saving configurations and configure the project
     // (creating .editorconfig files and other metadata files
     configuring() {
-        mergeJSON.call(this, { input: "_package.json", output: "package.json" });
-        createDirectory.call(this, "__tests__");
+        this.fs.copy(this.templatePath(".prettierignore"), this.destinationPath(".prettierignore"));
+        /* istanbul ignore else */
+        if (this.prettierrc) {
+            this.fs.copy(this.templatePath(".prettierrc.js"), this.destinationPath(".prettierrc.js"));
+        }
     }
 
     // Step 4: DEFAULT
@@ -58,8 +78,8 @@ module.exports = class extends YeomanGenerator {
     // ---------------
     // Where you write the generator specific files (routes, controllers, etc)
     writing() {
-        // Updates files
-        this.fs.extendJSON(this.destinationPath("package.json"), {});
+        // Updates package.json file
+        mergeJSON.call(this, { input: "_package.json", output: "package.json" });
     }
 
     // Step 6: CONFLICTS
@@ -92,7 +112,7 @@ module.exports = class extends YeomanGenerator {
     end() {
         /* istanbul ignore else  */
         if (!this.options.isBase) {
-            this.log(`${chalk.blue("Finished installing Jest")}`);
+            this.log(`${chalk.blue("Finished installing Prettier")}`);
         }
     }
 };
