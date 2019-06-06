@@ -127,6 +127,8 @@ module.exports = class extends YeomanGenerator {
     eslintTask() {
         if (this.features.hasESLint) {
             this.composeWith(require.resolve("../eslint"), {
+                "features": this.features,
+                "isBase": true,
                 "skip-install": this.options["skip-install"]
             });
         }

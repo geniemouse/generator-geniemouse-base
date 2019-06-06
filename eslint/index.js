@@ -24,7 +24,12 @@ module.exports = class extends YeomanGenerator {
     // --------------------
     // Your initialization methods (checking current project state, getting configs, etc)
     initializing() {
-        this.log(`${chalk.blue("Installing eslint")}`);
+        /* istanbul ignore else  */
+        if (!this.options.isBase) {
+            this.log(`${chalk.blue("Installing eslint")}`);
+        }
+
+        this.features = this.options.features || {};
     }
 
     // Step 2: PROMPTING
@@ -52,8 +57,33 @@ module.exports = class extends YeomanGenerator {
     // ---------------
     // Where you write the generator specific files (routes, controllers, etc)
     writing() {
-        this.log(`${chalk.green("writing eslint settings into package.json")}`);
-        this.fs.extendJSON(this.destinationPath("package.json"), {});
+        const { hasJest, hasPrettier } = this.features;
+
+        function eslintrcData() {
+            return {
+                env: {
+                    jest: hasJest ? true : undefined
+                },
+                extends: hasPrettier ? ["airbnb-base", "prettier"] : ["airbnb-base"],
+                plugins: hasPrettier ? ["prettier"] : []
+            };
+        }
+
+        function eslintPrettierPackages() {
+            if (hasPrettier) {
+                return {
+                    devDependencies: {
+                        "eslint-config-prettier": "^4.3.0",
+                        "eslint-plugin-prettier": "^3.1.0"
+                    }
+                };
+            }
+            return {};
+        }
+
+        // Updates files
+        this.fs.extendJSON(this.destinationPath(".eslintrc"), eslintrcData());
+        this.fs.extendJSON(this.destinationPath("package.json"), eslintPrettierPackages());
     }
 
     // Step 6: CONFLICTS
@@ -68,19 +98,25 @@ module.exports = class extends YeomanGenerator {
     // Yeoman collects & calls install once
     install() {
         const hasYarn = commandExists("yarn");
-        this.installDependencies({
-            npm: !hasYarn,
-            yarn: hasYarn,
-            bower: false,
-            skipMessage: this.options["skip-install-message"],
-            skipInstall: this.options["skip-install"]
-        });
+        /* istanbul ignore else  */
+        if (!this.options.isBase) {
+            this.installDependencies({
+                npm: !hasYarn,
+                yarn: hasYarn,
+                bower: false,
+                skipMessage: this.options["skip-install-message"],
+                skipInstall: this.options["skip-install"]
+            });
+        }
     }
 
     // Step 8: END
     // -----------
     // Called last, cleanup, say good bye, etc
     end() {
-        this.log(`${chalk.blue("Finished installing eslint")}`);
+        /* istanbul ignore else  */
+        if (!this.options.isBase) {
+            this.log(`${chalk.blue("Finished installing eslint")}`);
+        }
     }
 };
