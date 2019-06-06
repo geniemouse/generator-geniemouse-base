@@ -7,7 +7,6 @@ const mkdirp = require("mkdirp");
 const yosay = require("yosay");
 
 // Config files
-const makeESLintConfig = require("../config/eslint");
 const makePackage = require("../config/package");
 const options = require("../config/options");
 const prompts = require("../config/prompts");
@@ -127,9 +126,9 @@ module.exports = class extends YeomanGenerator {
 
     eslintTask() {
         if (this.features.hasESLint) {
-            this.fs.copy(this.templatePath(".eslintignore"), this.destinationPath(".eslintignore"));
-            this.fs.copyTpl(this.templatePath(".eslintrc"), this.destinationPath(".eslintrc"), this.data);
-            this.fs.extendJSON(this.destinationPath(".eslintrc"), makeESLintConfig(this.data));
+            this.composeWith(require.resolve("../eslint"), {
+                "skip-install": this.options["skip-install"]
+            });
         }
     }
 
