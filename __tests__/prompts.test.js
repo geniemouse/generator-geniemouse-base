@@ -8,9 +8,9 @@ const { appname, directories, prettierrc, version } = prompts.reduce((result, it
     return result;
 }, {});
 
-describe("Config/Prompts:", () => {
-    describe("appname:", () => {
-        test("default is the current root directory", () => {
+describe("Base generator prompts", () => {
+    describe("appname", () => {
+        test("defaults to the current root directory name", () => {
             expect(appname.default).toBe(currentRootDirectory);
         });
 
@@ -23,7 +23,7 @@ describe("Config/Prompts:", () => {
             expect(appname.filter("@foobar-foo-bar-baz")).toBe(`foobar-${expectedOutput}`);
         });
 
-        test("filters regular scoped project names correctly", () => {
+        test("filters regular @scoped project names correctly", () => {
             const expectedOutput = "foo-bar-baz";
             expect(appname.filter(" @foobar/foo bar baz ")).toBe(`@foobar/${expectedOutput}`);
             expect(appname.filter("@foobar/foo-bar-baz")).toBe(`@foobar/${expectedOutput}`);
@@ -37,8 +37,8 @@ describe("Config/Prompts:", () => {
         });
     });
 
-    describe("version:", () => {
-        test("default is 1.0.0", () => {
+    describe("version", () => {
+        test("defaults to `1.0.0`", () => {
             expect(version.default).toBe("1.0.0");
         });
 
@@ -51,14 +51,14 @@ describe("Config/Prompts:", () => {
         });
     });
 
-    describe("prettierrc:", () => {
+    describe("prettierrc", () => {
         test("prettierrc input to be stored", () => {
             expect(prettierrc.default).toBe(undefined);
             expect(prettierrc.store).toBe(true);
         });
     });
 
-    describe("directories:", () => {
+    describe("directories", () => {
         test("directory input to be stored", () => {
             expect(directories.default).toBe(undefined);
             expect(directories.store).toBe(true);
