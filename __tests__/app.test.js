@@ -2,7 +2,7 @@ const path = require("path");
 const assert = require("yeoman-assert");
 const helpers = require("yeoman-test");
 
-const app = "../app";
+const app = "../generators/app";
 const eslintFeature = { files: [".eslintignore", ".eslintrc"], readMeHeading: "### Linting" };
 const jestFeature = { files: ["__tests__"], readMeHeading: "### Tests (Jest)" };
 const prettierFeature = { files: [".prettierignore", ".prettierrc.js"] };

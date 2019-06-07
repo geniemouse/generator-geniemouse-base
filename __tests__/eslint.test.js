@@ -2,7 +2,7 @@ const path = require("path");
 const helpers = require("yeoman-test");
 const assert = require("yeoman-assert");
 
-const subGen = "../eslint";
+const subGen = "../generators/eslint";
 const eslintFiles = [".eslintignore", ".eslintrc"];
 
 describe("ESLint sub-generator", () => {

@@ -14,7 +14,7 @@ const prompts = [
         type: "input",
         name: "appname",
         message: "Project app name?",
-        suffix: " (Any entry will be kebab-cased)",
+        suffix: "\n(Any entry will be kebab-cased)",
         default: path.basename(process.cwd()),
         filter: (str) => {
             const s = str.trim();
@@ -77,7 +77,7 @@ const prompts = [
         type: "confirm",
         name: "prettierrc",
         message: "Would you like a .prettierrc.js file to be created?",
-        suffix: " (For overriding bundled Prettier config rules)",
+        suffix: "\n(For overriding bundled Prettier config rules)",
         store: true,
         when: (answers) => answers.features.includes("hasPrettier")
     },
@@ -88,7 +88,7 @@ const prompts = [
         type: "input",
         name: "directories",
         message: "Initial directories:",
-        suffix: " (Comma-separated list, nested directories separated by /)",
+        suffix: "\n(Comma-separated list, nested directories separated by /)",
         store: true,
         filter: (dirs) => {
             if (typeof dirs === "string") {

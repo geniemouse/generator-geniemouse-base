@@ -2,7 +2,7 @@ const path = require("path");
 const helpers = require("yeoman-test");
 const assert = require("yeoman-assert");
 
-const subGen = "../prettier";
+const subGen = "../generators/prettier";
 
 describe("Prettier sub-generator", () => {
     beforeAll((done) => {

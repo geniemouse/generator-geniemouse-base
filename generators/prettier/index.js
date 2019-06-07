@@ -5,10 +5,10 @@ const commandExists = require("command-exists").sync;
 const yosay = require("yosay");
 
 // Config files
-const options = require("../config/options");
+const options = require("../../config/options");
 
 // Utils
-const { createDirectory, mergeJSON } = require("../utils");
+const { createDirectory, mergeJSON } = require("../../utils");
 
 /**
  * Prettier sub-generator

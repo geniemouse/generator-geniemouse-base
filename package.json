@@ -2,7 +2,7 @@
   "name": "generator-geniemouse-base",
   "version": "1.2.0",
   "description": "A Yeoman generator for producing base project structure and configuration files.",
-  "main": "app/index.js",
+  "main": "generators/app/index.js",
   "scripts": {
     "lint": "eslint ./",
     "test": "jest ./",
@@ -10,10 +10,9 @@
     "test:watch": "jest ./ --watchAll"
   },
   "files": [
-    "app",
-    "eslint",
-    "jest",
-    "prettier"
+    "config",
+    "generators",
+    "utils"
   ],
   "jest": {
     "verbose": false,

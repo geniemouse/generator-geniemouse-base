@@ -2,7 +2,7 @@ const path = require("path");
 const helpers = require("yeoman-test");
 const assert = require("yeoman-assert");
 
-const subGen = "../jest";
+const subGen = "../generators/jest";
 const jestDirectories = ["__tests__"];
 
 describe("Jest sub-generator", () => {

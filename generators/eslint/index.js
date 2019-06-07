@@ -5,13 +5,13 @@ const commandExists = require("command-exists").sync;
 const yosay = require("yosay");
 
 // Config files
-const options = require("../config/options");
+const options = require("../../config/options");
 
 // Utils
-const { createDirectory, mergeJSON } = require("../utils");
+const { mergeJSON } = require("../../utils");
 
 /**
- * Jest sub-generator
+ * ESLint sub-generator
  */
 module.exports = class extends YeomanGenerator {
     constructor(args, opts) {
@@ -30,15 +30,38 @@ module.exports = class extends YeomanGenerator {
     initializing() {
         /* istanbul ignore else  */
         if (!this.options.isBase) {
-            this.log(yosay(`${chalk.blue("Installing Jest to this project location")}`));
+            this.log(yosay(`${chalk.blue("Installing ESLint to this project location")}`));
         }
+
+        this.features = this.options.features || {};
     }
 
     // Step 2: PROMPTING
     // -----------------
     // Where you prompt users for options (where you’d call this.prompt())
     // @NOTE: this.prompt() can be called in other places too
-    // prompting() {}
+    prompting() {
+        /* istanbul ignore else  */
+        if (!this.options.isBase) {
+            return this.prompt([
+                {
+                    type: "confirm",
+                    name: "eslint:hasJest",
+                    message: "Add ESLint support for Jest?",
+                    store: true
+                },
+                {
+                    type: "confirm",
+                    name: "eslint:hasPrettier",
+                    message: "Add ESLint support for Prettier?",
+                    store: true
+                }
+            ]).then((answers) => {
+                this.features.hasJest = answers["eslint:hasJest"];
+                this.features.hasPrettier = answers["eslint:hasPrettier"];
+            });
+        }
+    }
 
     // Step 3: CONFIGURING
     // -------------------
@@ -46,7 +69,8 @@ module.exports = class extends YeomanGenerator {
     // (creating .editorconfig files and other metadata files
     configuring() {
         mergeJSON.call(this, { input: "_package.json", output: "package.json" });
-        createDirectory.call(this, "__tests__");
+        this.fs.copy(this.templatePath(".eslintignore"), this.destinationPath(".eslintignore"));
+        this.fs.copy(this.templatePath(".eslintrc"), this.destinationPath(".eslintrc"));
     }
 
     // Step 4: DEFAULT
@@ -58,8 +82,32 @@ module.exports = class extends YeomanGenerator {
     // ---------------
     // Where you write the generator specific files (routes, controllers, etc)
     writing() {
-        // Updates files
-        this.fs.extendJSON(this.destinationPath("package.json"), {});
+        const { hasJest, hasPrettier } = this.features;
+
+        function eslintrcData() {
+            return {
+                env: {
+                    jest: hasJest ? true : undefined
+                },
+                extends: hasPrettier ? ["airbnb-base", "prettier"] : ["airbnb-base"],
+                plugins: hasPrettier ? ["prettier"] : []
+            };
+        }
+
+        function eslintPrettierPackages() {
+            if (hasPrettier) {
+                return {
+                    devDependencies: {
+                        "eslint-config-prettier": "^4.3.0",
+                        "eslint-plugin-prettier": "^3.1.0"
+                    }
+                };
+            }
+            return {};
+        }
+
+        this.fs.extendJSON(this.destinationPath(".eslintrc"), eslintrcData());
+        this.fs.extendJSON(this.destinationPath("package.json"), eslintPrettierPackages());
     }
 
     // Step 6: CONFLICTS
@@ -92,7 +140,7 @@ module.exports = class extends YeomanGenerator {
     end() {
         /* istanbul ignore else  */
         if (!this.options.isBase) {
-            this.log(`${chalk.blue("Finished installing Jest")}`);
+            this.log(`${chalk.blue("Finished installing ESLint")}`);
         }
     }
 };

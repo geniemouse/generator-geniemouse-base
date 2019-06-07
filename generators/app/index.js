@@ -7,14 +7,14 @@ const mkdirp = require("mkdirp");
 const yosay = require("yosay");
 
 // Config files
-const options = require("../config/options");
-const prompts = require("../config/prompts");
+const options = require("../../config/options");
+const prompts = require("../../config/prompts");
 
 // Utils
-const { mergeJSON, usernamePattern } = require("../utils");
+const { mergeJSON, usernamePattern } = require("../../utils");
 
 // Generator package.json (for info)
-const generatorPackageJson = require("../package.json");
+const generatorPackageJson = require("../../package.json");
 
 /**
  * Base generator
