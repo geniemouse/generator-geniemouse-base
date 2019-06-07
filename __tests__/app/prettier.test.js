@@ -2,7 +2,7 @@ const path = require("path");
 const helpers = require("yeoman-test");
 const assert = require("yeoman-assert");
 
-const app = "../app";
+const app = "../../app";
 
 describe("Prettier:", () => {
     describe("On:", () => {
@@ -21,16 +21,9 @@ describe("Prettier:", () => {
             assert.file([".prettierrc.js", ".prettierignore"]);
         });
 
-        // describe("package.json file", () => {
-        //     test("devDependencies has the expected packages", () => {
-        //         assert.jsonFileContent("package.json", {
-        //             devDependencies: {
-        //                 "@geniemouse/prettier-config": "^1.1.3",
-        //                 "prettier": "^1.17.1"
-        //             }
-        //         });
-        //     });
-        // });
+        test("package.json file mentions prettier", () => {
+            assert.fileContent("package.json", "prettier");
+        });
     });
 
     describe("Off:", () => {
@@ -40,8 +33,7 @@ describe("Prettier:", () => {
                 .withPrompts({
                     directories: [],
                     features: [],
-                    hasPrettier: false,
-                    prettierrc: false
+                    hasPrettier: false
                 })
                 .on("end", done);
         });
@@ -50,15 +42,8 @@ describe("Prettier:", () => {
             assert.noFile([".prettierrc.js", ".prettierignore"]);
         });
 
-        // describe("package.json file", () => {
-        //     test("devDependencies has the expected packages", () => {
-        //         assert.jsonFileContent("package.json", {
-        //             devDependencies: {
-        //                 "@geniemouse/prettier-config": undefined,
-        //                 "prettier": undefined
-        //             }
-        //         });
-        //     });
-        // });
+        test("package.json file does not mention prettier", () => {
+            assert.noFileContent("package.json", "prettier");
+        });
     });
 });

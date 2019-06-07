@@ -48,7 +48,7 @@ module.exports = class extends YeomanGenerator {
                     type: "confirm",
                     name: "prettier:prettierrc",
                     message: "Would you like a .prettierrc.js file to be created?",
-                    suffix: " (For overriding bundled Prettier config rules)",
+                    suffix: "\n(For overriding bundled Prettier config rules)",
                     store: true
                 }
             ]).then((answers) => {
