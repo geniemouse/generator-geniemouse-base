@@ -19,9 +19,8 @@ class App extends BaseGenerator {
     }
 
     _setFeatureFlags(features) {
-        return this.featureChoices.reduce((accumulator, feature) => {
+        return features.reduce((accumulator, feature) => {
             accumulator[feature] = features.includes(feature);
-            this.features[feature] = accumulator[feature];
             return accumulator;
         }, {});
     }
@@ -32,25 +31,10 @@ class App extends BaseGenerator {
             & ${chalk.green(".gitignore")} files. Nice and simple!`
         );
 
-        /**
-         * Automatically collect all the code features options;
-         * no need to add these manually to the generator code
-         * @param  {Array} featuresQuestion
-         * @return {Array}
-         */
-        function getAllFeaturesChoices(featuresQuestion) {
-            return featuresQuestion.choices.reduce((accumulator, feature) => {
-                accumulator.push(feature.value);
-                return accumulator;
-            }, []);
-        }
-
-        const featuresPrompt = prompts.find((prompt) => prompt.name === "features");
-        this.featureChoices = getAllFeaturesChoices(featuresPrompt);
-        // this.featuresList = [];
-        this.features = {};
-        this.directories = [];
         this.data = {};
+        this.directories = [];
+        this.features = [];
+        this.has = {}; // Future store for feature flags, e.g. `this.has.eslint``
     }
 
     prompting() {
@@ -68,9 +52,10 @@ class App extends BaseGenerator {
                 }
             };
 
-            this.directories = answers.directories;
-            this.featuresList = answers.features;
             this.data = Object.assign({}, answers, additionalData);
+            this.directories = answers.directories;
+            this.features = answers.features;
+            this.has = additionalData.features;
         });
     }
 
@@ -81,47 +66,14 @@ class App extends BaseGenerator {
         });
     }
 
-    // default() {
-    //     console.log("this.featuresList: ", this.featuresList);
-    //     // @TODO: feature name would need to be same as sub-gen dir
-    //     this.featuresList.forEach((feature) => {
-    //         this.composeWith(require.resolve(`../${feature}`), {
-    //             // @TODO: Add diff options
-    //             // - ESLINT: "features": this.feature,
-    //             // - PRETTIER: "prettierrc": this.data.prettierrc,
-    //             "isBase": true,
-    //             "skip-install": this.options["skip-install"]
-    //         });
-    //     });
-    // }
-
-    eslintTask() {
-        if (this.features.hasESLint) {
-            this.composeWith(require.resolve("../eslint"), {
-                "features": this.feature,
-                "isBase": true,
-                "skip-install": this.options["skip-install"]
+    default() {
+        this.features.forEach((feature) => {
+            this.composeWith(require.resolve(`../${feature}`), {
+                features: this.has,
+                generator: true,
+                prettierrc: this.data.prettierrc
             });
-        }
-    }
-
-    prettierTask() {
-        if (this.features.hasPrettier) {
-            this.composeWith(require.resolve("../prettier"), {
-                "isBase": true,
-                "prettierrc": this.data.prettierrc,
-                "skip-install": this.options["skip-install"]
-            });
-        }
-    }
-
-    jestTask() {
-        if (this.features.hasJest) {
-            this.composeWith(require.resolve("../jest"), {
-                "isBase": true,
-                "skip-install": this.options["skip-install"]
-            });
-        }
+        });
     }
 
     directoriesTask() {

@@ -51,7 +51,7 @@ Any other configuration notes...?
 
 As with any of these commands, if using `npm`, replace `yarn` with `npm run COMMAND_NAME`.
 
-<% if (features.hasESLint) { %>
+<% if (features.eslint) { %>
 
 ### Linting
 
@@ -69,7 +69,7 @@ Initial [ESLint rules] are provided by shared sets:
 ...and any overriding rules in `.eslintrc` file.
 
 <% } %>
-<% if (features.hasJest) { %>
+<% if (features.jest) { %>
 
 ### Tests (Jest)
 

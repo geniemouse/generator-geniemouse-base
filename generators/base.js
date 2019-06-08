@@ -57,7 +57,7 @@ class Base extends YeomanGenerator {
 
     installBase() {
         const hasYarn = commandExists("yarn");
-        if (!this.options.isBase) {
+        if (!this.options.generator) {
             this.installDependencies({
                 npm: !hasYarn,
                 yarn: hasYarn,
@@ -125,7 +125,7 @@ class Base extends YeomanGenerator {
      * @return {Function}
      */
     messageFactory(message) {
-        return !this.options["skip-welcome-message"] && !this.options.isBase
+        return !this.options["skip-welcome-message"] && !this.options.generator
             ? this.log(yosay(message))
             : this.log(message);
     }

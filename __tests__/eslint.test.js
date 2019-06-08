@@ -11,11 +11,11 @@ describe("ESLint sub-generator", () => {
             .run(path.join(__dirname, subGen))
             .withOptions({
                 features: undefined,
-                isBase: undefined
+                generator: undefined
             })
             .withPrompts({
-                "eslint:hasJest": false,
-                "eslint:hasPrettier": false
+                "eslint:jest": false,
+                "eslint:prettier": false
             })
             .on("end", done);
     });
@@ -67,12 +67,12 @@ describe("ESLint sub-generator", () => {
             helpers
                 .run(path.join(__dirname, subGen))
                 .withOptions({
-                    features: {
-                        hasESLint: true,
-                        hasJest: true,
-                        hasPrettier: false
-                    },
-                    isBase: true
+                    features: undefined,
+                    generator: undefined
+                })
+                .withPrompts({
+                    "eslint:jest": true,
+                    "eslint:prettier": false
                 })
                 .on("end", done);
         });
@@ -91,12 +91,12 @@ describe("ESLint sub-generator", () => {
             helpers
                 .run(path.join(__dirname, subGen))
                 .withOptions({
-                    features: {
-                        hasESLint: true,
-                        hasJest: false,
-                        hasPrettier: true
-                    },
-                    isBase: true
+                    features: undefined,
+                    generator: undefined
+                })
+                .withPrompts({
+                    "eslint:jest": false,
+                    "eslint:prettier": true
                 })
                 .on("end", done);
         });

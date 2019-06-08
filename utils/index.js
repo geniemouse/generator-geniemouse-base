@@ -23,6 +23,10 @@
 
 const usernamePattern = /^@[a-z0-9-]+\//i;
 
+function configArray(statement, settings) {
+    return statement ? settings : [];
+}
+
 function isObject(obj) {
     return typeof obj !== "undefined" && (obj instanceof Object && !Array.isArray(obj));
 }
@@ -46,6 +50,7 @@ function sortByKeyName(obj) {
 }
 
 module.exports = {
+    configArray,
     // pkgOrder,
     sortByKeyName,
     usernamePattern

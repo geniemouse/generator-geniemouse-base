@@ -55,17 +55,17 @@ const prompts = [
         choices: [
             {
                 name: " ESLint",
-                value: "hasESLint",
+                value: "eslint",
                 checked: true
             },
             {
                 name: " Prettier",
-                value: "hasPrettier",
+                value: "prettier",
                 checked: true
             },
             {
                 name: " Jest",
-                value: "hasJest",
+                value: "jest",
                 checked: true
             }
         ]

@@ -6,27 +6,29 @@
  */
 
 const BaseGenerator = require("../base");
+const { configArray } = require("../../utils");
 
 class Prettier extends BaseGenerator {
     initializing() {
         this.welcomeMessage("Prettier", { subgenerator: true });
         this.prettierrc = this.options.prettierrc;
+        this.subgen = !this.options.generator;
     }
 
     prompting() {
-        if (!this.options.isBase) {
-            return this.prompt([
-                {
-                    type: "confirm",
-                    name: "prettier:prettierrc",
-                    message: "Would you like a .prettierrc.js file to be created?",
-                    suffix: "\n(For overriding bundled Prettier config rules)",
-                    store: true
-                }
-            ]).then((answers) => {
-                this.prettierrc = answers["prettier:prettierrc"];
-            });
-        }
+        const prompts = configArray(this.subgen, [
+            {
+                type: "confirm",
+                name: "prettier:prettierrc",
+                message: "Would you like a .prettierrc.js file to be created?",
+                suffix: "\n(For overriding bundled Prettier config rules)",
+                store: true
+            }
+        ]);
+
+        return this.prompt(prompts).then((answers) => {
+            this.prettierrc = answers["prettier:prettierrc"];
+        });
     }
 
     configuring() {
@@ -47,7 +49,7 @@ class Prettier extends BaseGenerator {
     }
 
     end() {
-        if (!this.options.isBase) {
+        if (this.subgen) {
             this.goodbyeMessage("Prettier", { subgenerator: true });
         }
     }

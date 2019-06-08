@@ -12,6 +12,7 @@ const BaseGenerator = require("../base");
 class Jest extends BaseGenerator {
     initializing() {
         this.welcomeMessage("Jest", { subgenerator: true });
+        this.subgen = !this.options.generator;
     }
 
     configuring() {
@@ -29,7 +30,7 @@ class Jest extends BaseGenerator {
     }
 
     end() {
-        if (!this.options.isBase) {
+        if (this.subgen) {
             this.goodbyeMessage("Jest", { subgenerator: true });
         }
     }

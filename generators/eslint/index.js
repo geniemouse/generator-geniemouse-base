@@ -6,33 +6,35 @@
  */
 
 const BaseGenerator = require("../base");
+const { configArray } = require("../../utils");
 
 class ESLint extends BaseGenerator {
     initializing() {
         this.welcomeMessage("ESLint", { subgenerator: true });
         this.features = this.options.features || {};
+        this.subgen = !this.options.generator;
     }
 
     prompting() {
-        if (!this.options.isBase) {
-            return this.prompt([
-                {
-                    type: "confirm",
-                    name: "eslint:hasJest",
-                    message: "Add ESLint support for Jest?",
-                    store: true
-                },
-                {
-                    type: "confirm",
-                    name: "eslint:hasPrettier",
-                    message: "Add ESLint support for Prettier?",
-                    store: true
-                }
-            ]).then((answers) => {
-                this.features.hasJest = answers["eslint:hasJest"];
-                this.features.hasPrettier = answers["eslint:hasPrettier"];
-            });
-        }
+        const prompts = configArray(this.subgen, [
+            {
+                type: "confirm",
+                name: "eslint:jest",
+                message: "Add ESLint support for Jest?",
+                store: true
+            },
+            {
+                type: "confirm",
+                name: "eslint:prettier",
+                message: "Add ESLint support for Prettier?",
+                store: true
+            }
+        ]);
+
+        return this.prompt(prompts).then((answers) => {
+            this.features.jest = answers["eslint:jest"];
+            this.features.prettier = answers["eslint:prettier"];
+        });
     }
 
     configuring() {
@@ -41,20 +43,20 @@ class ESLint extends BaseGenerator {
     }
 
     writing() {
-        const { hasJest, hasPrettier } = this.features;
+        const { jest, prettier } = this.features;
 
         function eslintrcData() {
             return {
                 env: {
-                    jest: hasJest ? true : undefined
+                    jest: jest ? true : undefined
                 },
-                extends: hasPrettier ? ["airbnb-base", "prettier"] : ["airbnb-base"],
-                plugins: hasPrettier ? ["prettier"] : []
+                extends: prettier ? ["airbnb-base", "prettier"] : ["airbnb-base"],
+                plugins: prettier ? ["prettier"] : []
             };
         }
 
         function eslintPrettierPackages() {
-            if (hasPrettier) {
+            if (prettier) {
                 return {
                     devDependencies: {
                         "eslint-config-prettier": "^4.3.0",
@@ -78,7 +80,7 @@ class ESLint extends BaseGenerator {
     }
 
     end() {
-        if (!this.options.isBase) {
+        if (this.subgen) {
             this.goodbyeMessage("ESLint", { subgenerator: true });
         }
     }

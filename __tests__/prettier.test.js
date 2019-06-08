@@ -10,7 +10,7 @@ describe("Prettier sub-generator", () => {
             .run(path.join(__dirname, subGen))
             .withOptions({
                 features: undefined,
-                isBase: undefined
+                generator: undefined
             })
             .withPrompts({
                 "prettier:prettierrc": false
@@ -42,7 +42,7 @@ describe("Prettier sub-generator", () => {
                 .run(path.join(__dirname, subGen))
                 .withOptions({
                     features: undefined,
-                    isBase: undefined
+                    generator: undefined
                 })
                 .withPrompts({
                     "prettier:prettierrc": true

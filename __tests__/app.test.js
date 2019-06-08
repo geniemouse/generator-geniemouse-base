@@ -72,7 +72,7 @@ describe("Add ESLint feature", () => {
             .run(path.join(__dirname, app))
             .withPrompts({
                 directories: [],
-                features: ["hasESLint"]
+                features: ["eslint"]
             })
             .on("end", done);
     });
@@ -92,7 +92,7 @@ describe("Add Jest feature", () => {
             .run(path.join(__dirname, app))
             .withPrompts({
                 directories: [],
-                features: ["hasJest"]
+                features: ["jest"]
             })
             .on("end", done);
     });
@@ -112,7 +112,7 @@ describe("Add Prettier feature", () => {
             .run(path.join(__dirname, app))
             .withPrompts({
                 directories: [],
-                features: ["hasPrettier"],
+                features: ["prettier"],
                 prettierrc: true
             })
             .on("end", done);
