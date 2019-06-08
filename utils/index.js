@@ -1,3 +1,26 @@
+// @TODO: Preferred package.json order:
+// const pkgOrder = [
+//     "name",
+//     "version",
+//     "description",
+//     "private",
+//     "keywords",
+//     "license",
+//     "author",
+//     "main",
+//     "scripts",
+//     "files",
+//     "engines",
+//     "jest",
+//     "prettier",
+//     "dependencies",
+//     "devDependencies",
+//     "peerDependencies",
+//     "repository",
+//     "bugs",
+//     "homepage"
+// ];
+
 const usernamePattern = /^@[a-z0-9-]+\//i;
 
 function isObject(obj) {
@@ -23,6 +46,7 @@ function sortByKeyName(obj) {
 }
 
 module.exports = {
+    // pkgOrder,
     sortByKeyName,
     usernamePattern
 };

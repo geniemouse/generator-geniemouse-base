@@ -1,20 +1,19 @@
-// Import packages
-// ...
+/**
+ * Prettier class
+ * ==============
+ * Extends Base
+ * Sub-generator class `yo geniemouse-base:prettier`
+ */
 
-// Config files
 const BaseGenerator = require("../base");
 
-/**
- * Prettier sub-generator
- */
-module.exports = class extends BaseGenerator {
+class Prettier extends BaseGenerator {
     initializing() {
         this.welcomeMessage("Prettier", { subgenerator: true });
         this.prettierrc = this.options.prettierrc;
     }
 
     prompting() {
-        /* istanbul ignore else  */
         if (!this.options.isBase) {
             return this.prompt([
                 {
@@ -40,6 +39,7 @@ module.exports = class extends BaseGenerator {
     writing() {
         // Handle updates to package.json file
         this.mergeJsonTemplate({ input: "_package.json", output: "package.json" });
+        this.sortPackageDependencies();
     }
 
     install() {
@@ -51,4 +51,6 @@ module.exports = class extends BaseGenerator {
             this.goodbyeMessage("Prettier", { subgenerator: true });
         }
     }
-};
+}
+
+module.exports = Prettier;

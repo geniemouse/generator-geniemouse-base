@@ -1,13 +1,15 @@
 // Import packages
 // ...
+/**
+ * Jest class
+ * ==========
+ * Extends Base
+ * Sub-generator class `yo geniemouse-base:jest`
+ */
 
-// Config files
 const BaseGenerator = require("../base");
 
-/**
- * Jest sub-generator
- */
-module.exports = class extends BaseGenerator {
+class Jest extends BaseGenerator {
     initializing() {
         this.welcomeMessage("Jest", { subgenerator: true });
     }
@@ -19,6 +21,7 @@ module.exports = class extends BaseGenerator {
     writing() {
         // Handle updates to package.json file
         this.mergeJsonTemplate({ input: "_package.json", output: "package.json" });
+        this.sortPackageDependencies();
     }
 
     install() {
@@ -30,4 +33,6 @@ module.exports = class extends BaseGenerator {
             this.goodbyeMessage("Jest", { subgenerator: true });
         }
     }
-};
+}
+
+module.exports = Jest;

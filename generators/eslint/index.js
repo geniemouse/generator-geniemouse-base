@@ -1,20 +1,19 @@
-// Import packages
-// ...
+/**
+ * ESLint class
+ * ============
+ * Extends Base
+ * Sub-generator class `yo geniemouse-base:eslint`
+ */
 
-// Config files
 const BaseGenerator = require("../base");
 
-/**
- * ESLint sub-generator
- */
-module.exports = class extends BaseGenerator {
+class ESLint extends BaseGenerator {
     initializing() {
         this.welcomeMessage("ESLint", { subgenerator: true });
         this.features = this.options.features || {};
     }
 
     prompting() {
-        /* istanbul ignore else  */
         if (!this.options.isBase) {
             return this.prompt([
                 {
@@ -71,6 +70,7 @@ module.exports = class extends BaseGenerator {
         // Handle updates to package.json file
         this.mergeJsonTemplate({ input: "_package.json", output: "package.json" });
         this.fs.extendJSON(this.destinationPath("package.json"), eslintPrettierPackages());
+        this.sortPackageDependencies();
     }
 
     install() {
@@ -82,4 +82,6 @@ module.exports = class extends BaseGenerator {
             this.goodbyeMessage("ESLint", { subgenerator: true });
         }
     }
-};
+}
+
+module.exports = ESLint;

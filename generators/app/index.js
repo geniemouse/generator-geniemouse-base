@@ -1,21 +1,19 @@
-// Import packages
+/**
+ * App class
+ * =========
+ * Extends Base
+ * Default generator class `yo geniemouse-base`
+ */
+
 const chalk = require("chalk");
 const { capitalize } = require("lodash");
 
-// Config files
 const BaseGenerator = require("../base");
 const prompts = require("../../config/prompts");
-
-// Utils
 const { usernamePattern } = require("../../utils");
-
-// Generator package.json (for info)
 const generatorPackageJson = require("../../package.json");
 
-/**
- * Base generator
- */
-module.exports = class extends BaseGenerator {
+class App extends BaseGenerator {
     _setFriendlyName(str) {
         return capitalize(str.replace(usernamePattern, "").replace(/-/g, " "));
     }
@@ -49,6 +47,7 @@ module.exports = class extends BaseGenerator {
 
         const featuresPrompt = prompts.find((prompt) => prompt.name === "features");
         this.featureChoices = getAllFeaturesChoices(featuresPrompt);
+        // this.featuresList = [];
         this.features = {};
         this.directories = [];
         this.data = {};
@@ -70,6 +69,7 @@ module.exports = class extends BaseGenerator {
             };
 
             this.directories = answers.directories;
+            this.featuresList = answers.features;
             this.data = Object.assign({}, answers, additionalData);
         });
     }
@@ -80,6 +80,20 @@ module.exports = class extends BaseGenerator {
             this.fs.copy(this.templatePath(file), this.destinationPath(file));
         });
     }
+
+    // default() {
+    //     console.log("this.featuresList: ", this.featuresList);
+    //     // @TODO: feature name would need to be same as sub-gen dir
+    //     this.featuresList.forEach((feature) => {
+    //         this.composeWith(require.resolve(`../${feature}`), {
+    //             // @TODO: Add diff options
+    //             // - ESLINT: "features": this.feature,
+    //             // - PRETTIER: "prettierrc": this.data.prettierrc,
+    //             "isBase": true,
+    //             "skip-install": this.options["skip-install"]
+    //         });
+    //     });
+    // }
 
     eslintTask() {
         if (this.features.hasESLint) {
@@ -120,6 +134,7 @@ module.exports = class extends BaseGenerator {
         this.fs.copyTpl(this.templatePath("_README.md"), this.destinationPath("README.md"), this.data);
         // Handle updates to package.json file
         this.mergeJsonTemplate({ input: "_package.json", output: "package.json", data: this.data });
+        this.sortPackageDependencies();
     }
 
     install() {
@@ -129,4 +144,6 @@ module.exports = class extends BaseGenerator {
     end() {
         this.goodbyeMessage();
     }
-};
+}
+
+module.exports = App;
