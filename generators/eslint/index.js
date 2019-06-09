@@ -5,12 +5,12 @@
  * Sub-generator class `yo geniemouse-base:eslint`
  */
 
-const BaseGenerator = require("../base");
+const BaseYeomanGenerator = require("../base");
 const { configArray } = require("../../utils");
 
-class ESLint extends BaseGenerator {
+class ESLint extends BaseYeomanGenerator {
     initializing() {
-        this.welcomeMessage("ESLint", { subgenerator: true });
+        this._welcomeMessage("ESLint", { subgenerator: true });
         this.features = this.options.features || {};
         this.subgen = !this.options.generator;
     }
@@ -70,18 +70,18 @@ class ESLint extends BaseGenerator {
         this.fs.extendJSON(this.destinationPath(".eslintrc"), eslintrcData());
 
         // Handle updates to package.json file
-        this.mergeJsonTemplate({ input: "_package.json", output: "package.json" });
+        this._mergeJsonTemplate({ input: "_package.json", output: "package.json" });
         this.fs.extendJSON(this.destinationPath("package.json"), eslintPrettierPackages());
-        this.sortPackageDependencies();
+        this._sortPackageDependencies();
     }
 
     install() {
-        this.installBase();
+        this._installBase();
     }
 
     end() {
         if (this.subgen) {
-            this.goodbyeMessage("ESLint", { subgenerator: true });
+            this._goodbyeMessage("ESLint", { subgenerator: true });
         }
     }
 }

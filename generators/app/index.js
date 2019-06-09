@@ -8,12 +8,12 @@
 const chalk = require("chalk");
 const { capitalize } = require("lodash");
 
-const BaseGenerator = require("../base");
+const BaseYeomanGenerator = require("../base");
 const prompts = require("../../config/prompts");
 const { usernamePattern } = require("../../utils");
 const generatorPackageJson = require("../../package.json");
 
-class App extends BaseGenerator {
+class App extends BaseYeomanGenerator {
     _setFriendlyName(str) {
         return capitalize(str.replace(usernamePattern, "").replace(/-/g, " "));
     }
@@ -26,7 +26,7 @@ class App extends BaseGenerator {
     }
 
     initializing() {
-        this.welcomeMessage(
+        this._welcomeMessage(
             `${chalk.green(".editorconfig")}, ${chalk.green(".gitattributes")}
             & ${chalk.green(".gitignore")} files. Nice and simple!`
         );
@@ -78,23 +78,23 @@ class App extends BaseGenerator {
 
     directoriesTask() {
         this.directories.forEach((dir) => {
-            this.createDirectory(dir);
+            this._createDirectory(dir);
         });
     }
 
     writing() {
         this.fs.copyTpl(this.templatePath("_README.md"), this.destinationPath("README.md"), this.data);
         // Handle updates to package.json file
-        this.mergeJsonTemplate({ input: "_package.json", output: "package.json", data: this.data });
-        this.sortPackageDependencies();
+        this._mergeJsonTemplate({ input: "_package.json", output: "package.json", data: this.data });
+        this._sortPackageDependencies();
     }
 
     install() {
-        this.installBase();
+        this._installBase();
     }
 
     end() {
-        this.goodbyeMessage();
+        this._goodbyeMessage();
     }
 }
 

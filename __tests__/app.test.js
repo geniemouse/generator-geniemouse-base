@@ -7,7 +7,7 @@ const eslintFeature = { files: [".eslintignore", ".eslintrc"], readMeHeading: "#
 const jestFeature = { files: ["__tests__"], readMeHeading: "### Tests (Jest)" };
 const prettierFeature = { files: [".prettierignore", ".prettierrc.js"] };
 
-describe("Base generator", () => {
+describe("App generator", () => {
     beforeAll((done) => {
         helpers
             .run(path.join(__dirname, app))

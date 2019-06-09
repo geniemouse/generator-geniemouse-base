@@ -7,15 +7,15 @@
  *
  * 1. constructor
  * 2. General utilites
- *     - createDirectory
- *     - installBase
+ *     - _createDirectory
+ *     - _installBase
  * 3. JSON & package.json utilities
- *     - mergeJsonTemplate
- *     - sortPackageDependencies
+ *     - _mergeJsonTemplate
+ *     - _sortPackageDependencies
  * 4. Messaging utilities
- *     - messageFactory
- *     - welcomeMessage
- *     - goodbyeMessage
+ *     - _messageFactory
+ *     - _welcomeMessage
+ *     - _goodbyeMessage
  */
 
 const YeomanGenerator = require("yeoman-generator");
@@ -47,15 +47,13 @@ class Base extends YeomanGenerator {
      * 2. General utilites
      */
 
-    createDirectory(dir) {
+    _createDirectory(dir) {
         return mkdirp(dir, (err) => {
-            if (typeof this.log === "function") {
-                return this.log(err || `${chalk.green("create directory")} ${dir}`);
-            }
+            return this.log(err || `${chalk.green("create directory")} ${dir}`);
         });
     }
 
-    installBase() {
+    _installBase() {
         const hasYarn = commandExists("yarn");
         if (!this.options.generator) {
             this.installDependencies({
@@ -77,7 +75,7 @@ class Base extends YeomanGenerator {
      * @param  {Object} fileOptions -- {input: FILE_PATH, output: FILE_PATH, data: { optional }}
      * @return {Undefined}
      */
-    mergeJsonTemplate(fileOptions) {
+    _mergeJsonTemplate(fileOptions) {
         const { input, output, data } = fileOptions;
         const destination = this.destinationPath(output);
         const template = this.templatePath(input);
@@ -98,7 +96,7 @@ class Base extends YeomanGenerator {
      * Good for human-readable content.
      * @return {Undefined}
      */
-    sortPackageDependencies() {
+    _sortPackageDependencies() {
         const pkg = this.fs.readJSON(this.destinationPath("package.json"), {});
         const pkgBlankedDependencies = Object.assign({}, pkg, {
             dependencies: undefined,
@@ -124,7 +122,7 @@ class Base extends YeomanGenerator {
      * @param  {String} message
      * @return {Function}
      */
-    messageFactory(message) {
+    _messageFactory(message) {
         return !this.options["skip-welcome-message"] && !this.options.generator
             ? this.log(yosay(message))
             : this.log(message);
@@ -136,15 +134,15 @@ class Base extends YeomanGenerator {
      * @param  {Object} subGeneratorOptions -- { subgenerator: true }
      * @return {Function}
      */
-    welcomeMessage(message, subGeneratorOptions = {}) {
+    _welcomeMessage(message, subGeneratorOptions = {}) {
         const { subgenerator } = subGeneratorOptions;
         const baseMessage = !this.options["skip-welcome-message"]
             ? `'Allo 'allo! Out of the box, I include ${message}`
             : chalk.blue("Installing base project scaffolding");
         if (subgenerator) {
-            return this.messageFactory(chalk.blue(`Installing ${message} to this project location`));
+            return this._messageFactory(chalk.blue(`Installing ${message} to this project location`));
         }
-        return this.messageFactory(baseMessage);
+        return this._messageFactory(baseMessage);
     }
 
     /**
@@ -153,15 +151,15 @@ class Base extends YeomanGenerator {
      * @param  {Object} subGeneratorOptions -- { subgenerator: true }
      * @return {Function}
      */
-    goodbyeMessage(message, subGeneratorOptions = {}) {
+    _goodbyeMessage(message, subGeneratorOptions = {}) {
         const { subgenerator } = subGeneratorOptions;
         const baseMessage = `${chalk.blue("Finished generating base project files")}. See the ${chalk.bold.italic(
             "README.md"
         )} file further details\n`;
         if (subgenerator) {
-            return this.messageFactory(chalk.blue(`Finished installing ${message}`));
+            return this._messageFactory(chalk.blue(`Finished installing ${message}`));
         }
-        return this.messageFactory(baseMessage);
+        return this._messageFactory(baseMessage);
     }
 }
 

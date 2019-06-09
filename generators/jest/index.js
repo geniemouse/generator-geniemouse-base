@@ -7,31 +7,31 @@
  * Sub-generator class `yo geniemouse-base:jest`
  */
 
-const BaseGenerator = require("../base");
+const BaseYeomanGenerator = require("../base");
 
-class Jest extends BaseGenerator {
+class Jest extends BaseYeomanGenerator {
     initializing() {
-        this.welcomeMessage("Jest", { subgenerator: true });
+        this._welcomeMessage("Jest", { subgenerator: true });
         this.subgen = !this.options.generator;
     }
 
     configuring() {
-        this.createDirectory("__tests__");
+        this._createDirectory("__tests__");
     }
 
     writing() {
         // Handle updates to package.json file
-        this.mergeJsonTemplate({ input: "_package.json", output: "package.json" });
-        this.sortPackageDependencies();
+        this._mergeJsonTemplate({ input: "_package.json", output: "package.json" });
+        this._sortPackageDependencies();
     }
 
     install() {
-        this.installBase();
+        this._installBase();
     }
 
     end() {
         if (this.subgen) {
-            this.goodbyeMessage("Jest", { subgenerator: true });
+            this._goodbyeMessage("Jest", { subgenerator: true });
         }
     }
 }

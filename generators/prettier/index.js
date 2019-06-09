@@ -5,12 +5,12 @@
  * Sub-generator class `yo geniemouse-base:prettier`
  */
 
-const BaseGenerator = require("../base");
+const BaseYeomanGenerator = require("../base");
 const { configArray } = require("../../utils");
 
-class Prettier extends BaseGenerator {
+class Prettier extends BaseYeomanGenerator {
     initializing() {
-        this.welcomeMessage("Prettier", { subgenerator: true });
+        this._welcomeMessage("Prettier", { subgenerator: true });
         this.prettierrc = this.options.prettierrc;
         this.subgen = !this.options.generator;
     }
@@ -40,17 +40,17 @@ class Prettier extends BaseGenerator {
 
     writing() {
         // Handle updates to package.json file
-        this.mergeJsonTemplate({ input: "_package.json", output: "package.json" });
-        this.sortPackageDependencies();
+        this._mergeJsonTemplate({ input: "_package.json", output: "package.json" });
+        this._sortPackageDependencies();
     }
 
     install() {
-        this.installBase();
+        this._installBase();
     }
 
     end() {
         if (this.subgen) {
-            this.goodbyeMessage("Prettier", { subgenerator: true });
+            this._goodbyeMessage("Prettier", { subgenerator: true });
         }
     }
 }
