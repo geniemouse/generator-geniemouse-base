@@ -62,6 +62,14 @@ describe("ESLint sub-generator", () => {
         });
     });
 
+    test("[package.json] should not include name, version or description", () => {
+        assert.jsonFileContent("package.json", {
+            name: undefined,
+            description: undefined,
+            version: undefined
+        });
+    });
+
     describe("When installed alongside Jest", () => {
         beforeAll((done) => {
             helpers

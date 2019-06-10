@@ -35,7 +35,6 @@ describe("App generator", () => {
 
     test("package.json file has expected key/values", () => {
         assert.jsonFileContent("package.json", {
-            appname: undefined,
             description: "Lorem ipsum dolor",
             version: "1.1.1",
             scripts: {
@@ -63,6 +62,35 @@ describe("App generator", () => {
     test("README file does not include additional feature information", () => {
         assert.noFileContent("README.md", eslintFeature.readMeHeading);
         assert.noFileContent("README.md", jestFeature.readMeHeading);
+    });
+});
+
+describe("Package.json merge", () => {
+    beforeAll((done) => {
+        helpers
+            .run(path.join(__dirname, app))
+            .withPrompts({
+                description: "Overwrite package",
+                directories: [],
+                features: [],
+                version: "1.1.2"
+            })
+            .on("ready", (generator) => {
+                // Pre-create a `package.json` file with content that
+                // should get overwritten by newer information
+                generator.fs.writeJSON("package.json", {
+                    description: "Prefab package",
+                    version: "0.0.0"
+                });
+            })
+            .on("end", done);
+    });
+
+    test("combining with an existsing package.json file merges the contents as expected", () => {
+        assert.jsonFileContent("package.json", {
+            description: "Overwrite package",
+            version: "1.1.2"
+        });
     });
 });
 

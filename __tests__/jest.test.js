@@ -41,4 +41,12 @@ describe("Jest sub-generator", () => {
             }
         });
     });
+
+    test("[package.json] should not include name, version or description", () => {
+        assert.jsonFileContent("package.json", {
+            name: undefined,
+            description: undefined,
+            version: undefined
+        });
+    });
 });

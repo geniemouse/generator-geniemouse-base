@@ -40,8 +40,9 @@ class Prettier extends BaseYeomanGenerator {
 
     writing() {
         // Handle updates to package.json file
-        this._mergeJsonTemplate({ input: "_package.json", output: "package.json" });
+        this._handleJsonTemplate({ input: "_package.json", output: "package.json" });
         this._sortPackageDependencies();
+        this._sortPackageKeys();
     }
 
     install() {

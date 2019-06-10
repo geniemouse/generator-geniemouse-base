@@ -70,9 +70,18 @@ class ESLint extends BaseYeomanGenerator {
         this.fs.extendJSON(this.destinationPath(".eslintrc"), eslintrcData());
 
         // Handle updates to package.json file
-        this._mergeJsonTemplate({ input: "_package.json", output: "package.json" });
-        this.fs.extendJSON(this.destinationPath("package.json"), eslintPrettierPackages());
+        // @TODO: Pass data directly
+        this._handleJsonTemplate({
+            input: "_package.json",
+            output: "package.json",
+            data: eslintPrettierPackages()
+        });
+
+        // this._handleJsonTemplate({ input: "_package.json", output: "package.json" });
+        // this.fs.extendJSON(this.destinationPath("package.json"), eslintPrettierPackages());
+
         this._sortPackageDependencies();
+        this._sortPackageKeys();
     }
 
     install() {

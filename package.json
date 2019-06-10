@@ -48,6 +48,7 @@
   },
   "devDependencies": {
     "@geniemouse/prettier-config": "^1.1.3",
+    "deep-extend": "^0.6.0",
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-config-prettier": "^4.3.0",

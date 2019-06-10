@@ -1,25 +1,24 @@
-// @TODO: Preferred package.json order:
-// const pkgOrder = [
-//     "name",
-//     "version",
-//     "description",
-//     "private",
-//     "keywords",
-//     "license",
-//     "author",
-//     "main",
-//     "scripts",
-//     "files",
-//     "engines",
-//     "jest",
-//     "prettier",
-//     "dependencies",
-//     "devDependencies",
-//     "peerDependencies",
-//     "repository",
-//     "bugs",
-//     "homepage"
-// ];
+const pkgOrder = [
+    "private",
+    "name",
+    "version",
+    "description",
+    "keywords",
+    "author",
+    "license",
+    "main",
+    "scripts",
+    "files",
+    "engines",
+    "jest",
+    "prettier",
+    "dependencies",
+    "devDependencies",
+    "peerDependencies",
+    "repository",
+    "bugs",
+    "homepage"
+];
 
 const usernamePattern = /^@[a-z0-9-]+\//i;
 
@@ -29,6 +28,19 @@ function configArray(statement, settings) {
 
 function isObject(obj) {
     return typeof obj !== "undefined" && (obj instanceof Object && !Array.isArray(obj));
+}
+
+function sanitizeData(keys, data) {
+    if (!isObject(data)) {
+        return {};
+    }
+    return keys.reduce((accumulator, key) => {
+        const value = data[key];
+        if (typeof value !== "undefined") {
+            accumulator[key] = value;
+        }
+        return accumulator;
+    }, {});
 }
 
 /**
@@ -51,7 +63,9 @@ function sortByKeyName(obj) {
 
 module.exports = {
     configArray,
-    // pkgOrder,
+    isObject,
+    pkgOrder,
+    sanitizeData,
     sortByKeyName,
     usernamePattern
 };

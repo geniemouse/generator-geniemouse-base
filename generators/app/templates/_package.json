@@ -1,11 +1,11 @@
 {
+  "private": true,
   "name": "<%= (appname) %>",
   "version": "<%= (version) %>",
   "description": "<%= (description) %>",
-  "private": true,
-  "scripts": {},
   "keywords": [],
   "author": {},
+  "scripts": {},
   "engines": {
     "node": ">=6.0.0"
   },
