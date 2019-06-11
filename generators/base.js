@@ -2,8 +2,10 @@
  * Base class
  * ==========
  * Extends YeomanGenerator to share common methods with generator and sub-generators.
- * Methods written here (with exception of constructor) sit outside the Yeoman generator
- * run-loop; don't get called by generators automatically.
+ * - Methods written here (with exception of constructor) sit outside the Yeoman generator
+ *     run-loop; won't get called by generators automatically.
+ * - Also kept with the Yeoman generator convention of prefixing 'private' method names
+ *     with an underscore
  *
  * 1. constructor
  * 2. General utilites
@@ -11,7 +13,7 @@
  *     - _installBase
  * 3. JSON & package.json utilities
  *     - _handleJsonFile
- *     - _sortPackageDependencies
+ *     - _mergeJsonData
  * 4. Messaging utilities
  *     - _messageFactory
  *     - _welcomeMessage
@@ -37,10 +39,8 @@ class Base extends YeomanGenerator {
     constructor(args, opts) {
         // Don't replace Generator's parameters ;)
         super(args, opts);
-
-        // @TODO: Sort out saving
+        // Create initial `.yo-rc.json` file
         this.config.save();
-
         // Generator running with current options flags...
         Object.keys(options).map((optionName) => {
             return this.option(optionName, options[optionName]);
@@ -75,7 +75,7 @@ class Base extends YeomanGenerator {
      */
 
     /**
-     * Handle extending templates files with data i.e. `_package.json` file
+     * Handle extending JSON templates files with data i.e. `_package.json` file
      * @param  {Object} fileOptions -- {input: FILE_PATH, output: FILE_PATH, data: { optional }}
      * @return {Undefined}
      */
@@ -86,6 +86,14 @@ class Base extends YeomanGenerator {
         return this._mergeJsonData(destination, template, data || {});
     }
 
+    /**
+     * Handle reading, copying & parsing of templates files, with particular
+     * focus on merging various datasets in a proscribed & predictable order
+     * @param  {String} destination
+     * @param  {String} template
+     * @param  {Object} data -- Optional extra data
+     * @return {Undefined}
+     */
     _mergeJsonData(destination, template, data) {
         const destinationData = this.fs.readJSON(destination, {});
         const templateData = this.fs.readJSON(template, {});

@@ -1,13 +1,35 @@
+/**
+ * Basic pattern match for @-prefixed usernames at start of a string
+ * @type {RegExp}
+ */
 const usernamePattern = /^@[a-z0-9-]+\//i;
 
-function hasDataSpaces(fileData) {
-    return /<%[=_-].*%>/g.test(JSON.stringify(fileData));
-}
-
+/**
+ * Check if input is real JavaScript object
+ * @param  {*}  obj
+ * @return {Boolean}
+ */
 function isObject(obj) {
     return typeof obj !== "undefined" && (obj instanceof Object && !Array.isArray(obj));
 }
 
+/**
+ * Check raw (pre-processed) template file data to see if it contains any data holes
+ * - Based on this check, can determine whether to use `this.fs.copy(...)` or `this.fs.copyTpl(...)`
+ * @param  {Object}  fileData
+ * @return {Boolean}
+ */
+function hasDataSpaces(fileData) {
+    return /<%[=_-].*%>/g.test(JSON.stringify(fileData));
+}
+
+/**
+ * Collect & return set of keynames/defined values as an object
+ * - Strips keys with undefined values
+ * @param  {Array} keys
+ * @param  {Object} data
+ * @return {Object}
+ */
 function sanitizeData(keys, data) {
     return keys.reduce((accumulator, key) => {
         const value = data[key];
@@ -19,8 +41,9 @@ function sanitizeData(keys, data) {
 }
 
 /**
- * Utility: Create an object with alphabetized key names from another
- * - Although this doesn't matter to JS, humans will find this easier to parse
+ * Alphabetize an object's key name order
+ * - Although JS doesn't care, humans will find this easier to parse
+ * - When used on `package.json` data, consistent with how `yarn`/`npm` add package dependencies
  * @param  {Object} obj
  * @return {Object}
  */
@@ -36,14 +59,29 @@ function sortByKeyName(obj) {
         }, {});
 }
 
+/**
+ * Simple string test for `package.json` file/filepath
+ * @param  {String}  filepath
+ * @return {Boolean}
+ */
 function isPackageJson(filepath) {
     return /(package\.json)$/i.test(filepath);
 }
 
+/**
+ * Priority `package.json` keynames: the items filled-in by user in main generator's prompts
+ * @param  {object} packageData
+ * @return {Object}
+ */
 function priorityPackageData(packageData) {
     return sanitizeData(["name", "description", "version"], packageData);
 }
 
+/**
+ * Personal preference order for `package.json` keynames, for consistency
+ * @param  {Object} data
+ * @return {Object}
+ */
 function sortPackageJson(data) {
     const pkgOrder = [
         "private",
