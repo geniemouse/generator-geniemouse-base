@@ -10,7 +10,6 @@ describe("ESLint sub-generator", () => {
         helpers
             .run(path.join(__dirname, subGen))
             .withOptions({
-                features: undefined,
                 generator: undefined
             })
             .withPrompts({
@@ -75,7 +74,6 @@ describe("ESLint sub-generator", () => {
             helpers
                 .run(path.join(__dirname, subGen))
                 .withOptions({
-                    features: undefined,
                     generator: undefined
                 })
                 .withPrompts({
@@ -99,7 +97,6 @@ describe("ESLint sub-generator", () => {
             helpers
                 .run(path.join(__dirname, subGen))
                 .withOptions({
-                    features: undefined,
                     generator: undefined
                 })
                 .withPrompts({

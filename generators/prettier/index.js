@@ -10,7 +10,6 @@ const BaseYeomanGenerator = require("../base");
 class Prettier extends BaseYeomanGenerator {
     initializing() {
         this._welcomeMessage("Prettier", { subgenerator: true });
-        this.prettierrc = this.options.prettierrc;
         this.subgen = !this.options.generator;
     }
 
@@ -22,19 +21,19 @@ class Prettier extends BaseYeomanGenerator {
         return this.prompt([
             {
                 type: "confirm",
-                name: "prettier:prettierrc",
+                name: "prettierrc",
                 message: "Would you like a .prettierrc.js file to be created?",
                 suffix: "\n(For overriding bundled Prettier config rules)",
-                store: true
+                default: false
             }
         ]).then((answers) => {
-            this.prettierrc = answers["prettier:prettierrc"];
+            this.config.set("prettierrc", answers.prettierrc);
         });
     }
 
     configuring() {
         this.fs.copy(this.templatePath(".prettierignore"), this.destinationPath(".prettierignore"));
-        if (this.prettierrc) {
+        if (this.config.get("prettierrc")) {
             this.fs.copy(this.templatePath(".prettierrc.js"), this.destinationPath(".prettierrc.js"));
         }
     }

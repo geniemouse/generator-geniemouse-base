@@ -10,7 +10,6 @@ const BaseYeomanGenerator = require("../base");
 class ESLint extends BaseYeomanGenerator {
     initializing() {
         this._welcomeMessage("ESLint", { subgenerator: true });
-        this.features = this.options.features || {};
         this.subgen = !this.options.generator;
     }
 
@@ -24,17 +23,20 @@ class ESLint extends BaseYeomanGenerator {
                 type: "confirm",
                 name: "eslint:jest",
                 message: "Add ESLint support for Jest?",
-                store: true
+                default: true
             },
             {
                 type: "confirm",
                 name: "eslint:prettier",
                 message: "Add ESLint support for Prettier?",
-                store: true
+                default: true
             }
         ]).then((answers) => {
-            this.features.jest = answers["eslint:jest"];
-            this.features.prettier = answers["eslint:prettier"];
+            this.config.set("features", {
+                eslint: true,
+                jest: answers["eslint:jest"],
+                prettier: answers["eslint:prettier"]
+            });
         });
     }
 
@@ -44,7 +46,7 @@ class ESLint extends BaseYeomanGenerator {
     }
 
     writing() {
-        const { jest, prettier } = this.features;
+        const { jest, prettier } = this.config.get("features");
 
         this._handleJsonFile({
             input: ".eslintrc",

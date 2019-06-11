@@ -39,8 +39,22 @@ class Base extends YeomanGenerator {
     constructor(args, opts) {
         // Don't replace Generator's parameters ;)
         super(args, opts);
+
         // Create initial `.yo-rc.json` file
         this.config.save();
+        this.config.defaults({
+            features: {
+                eslint: true,
+                jest: true,
+                prettier: true
+            },
+            prettierrc: false,
+            promptValues: {
+                directories: ["app"],
+                features: ["eslint", "prettier", "jest"]
+            }
+        });
+
         // Generator running with current options flags...
         Object.keys(options).map((optionName) => {
             return this.option(optionName, options[optionName]);

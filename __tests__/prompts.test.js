@@ -5,7 +5,7 @@ const prompts = require("../config/prompts");
 const currentRootDirectory = path.basename(process.cwd());
 
 const { appname, directories, prettierrc, version } = prompts.reduce((result, item) => {
-    result[item.name === "prettier:prettierrc" ? "prettierrc" : item.name] = item;
+    result[item.name] = item;
     return result;
 }, {});
 
@@ -53,9 +53,9 @@ describe("Generator prompts", () => {
     });
 
     describe("prettierrc", () => {
-        test("prettierrc input to be stored", () => {
-            expect(prettierrc.default).toBe(undefined);
-            expect(prettierrc.store).toBe(true);
+        test("prettierrc input to be false by default", () => {
+            expect(prettierrc.default).toBe(false);
+            expect(prettierrc.store).toBe(undefined);
         });
     });
 

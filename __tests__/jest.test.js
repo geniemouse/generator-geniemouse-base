@@ -10,7 +10,6 @@ describe("Jest sub-generator", () => {
         helpers
             .run(path.join(__dirname, subGen))
             .withOptions({
-                features: undefined,
                 generator: undefined
             })
             .on("end", done);

@@ -34,7 +34,6 @@ class App extends BaseYeomanGenerator {
         this.data = {};
         this.directories = [];
         this.features = [];
-        this.has = {}; // Future store for feature flags, e.g. `this.has.eslint``
     }
 
     prompting() {
@@ -55,7 +54,6 @@ class App extends BaseYeomanGenerator {
             this.data = Object.assign({}, answers, additionalData);
             this.directories = answers.directories;
             this.features = answers.features;
-            this.has = additionalData.features;
         });
     }
 
@@ -64,14 +62,15 @@ class App extends BaseYeomanGenerator {
         rootFiles.forEach((file) => {
             this.fs.copy(this.templatePath(file), this.destinationPath(file));
         });
+
+        this.config.set("features", this._setFeatureFlags(this.features));
+        this.config.set("prettierrc", this.data["prettier:prettierrc"]);
     }
 
     default() {
         this.features.forEach((feature) => {
             this.composeWith(require.resolve(`../${feature}`), {
-                features: this.has,
-                generator: true,
-                prettierrc: this.data.prettierrc
+                generator: true
             });
         });
     }

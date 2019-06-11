@@ -77,10 +77,10 @@ const prompts = [
      */
     {
         type: "confirm",
-        name: "prettier:prettierrc",
+        name: "prettierrc",
         message: "Would you like a .prettierrc.js file to be created?",
         suffix: "\n(For overriding bundled Prettier config rules)",
-        store: true,
+        default: false,
         when: (answers) => answers.features.includes("prettier")
     },
 

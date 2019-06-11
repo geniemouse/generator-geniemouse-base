@@ -9,11 +9,10 @@ describe("Prettier sub-generator", () => {
         helpers
             .run(path.join(__dirname, subGen))
             .withOptions({
-                features: undefined,
                 generator: undefined
             })
             .withPrompts({
-                "prettier:prettierrc": false
+                prettierrc: false
             })
             .on("end", done);
     });
@@ -49,11 +48,10 @@ describe("Prettier sub-generator", () => {
             helpers
                 .run(path.join(__dirname, subGen))
                 .withOptions({
-                    features: undefined,
                     generator: undefined
                 })
                 .withPrompts({
-                    "prettier:prettierrc": true
+                    prettierrc: true
                 })
                 .on("end", done);
         });
