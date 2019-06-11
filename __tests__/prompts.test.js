@@ -3,12 +3,13 @@ const path = require("path");
 const prompts = require("../config/prompts");
 
 const currentRootDirectory = path.basename(process.cwd());
+
 const { appname, directories, prettierrc, version } = prompts.reduce((result, item) => {
-    result[item.name] = item;
+    result[item.name === "prettier:prettierrc" ? "prettierrc" : item.name] = item;
     return result;
 }, {});
 
-describe("Base generator prompts", () => {
+describe("Generator prompts", () => {
     describe("appname", () => {
         test("defaults to the current root directory name", () => {
             expect(appname.default).toBe(currentRootDirectory);

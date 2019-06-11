@@ -52,6 +52,7 @@ const prompts = [
         type: "checkbox",
         name: "features",
         message: "Which features would you like to include?",
+        store: true,
         choices: [
             {
                 name: " ESLint",
@@ -70,17 +71,19 @@ const prompts = [
             }
         ]
     },
+
     /**
      * Optional .prettierrc file step, if Prettier feature has been requested
      */
     {
         type: "confirm",
-        name: "prettierrc",
+        name: "prettier:prettierrc",
         message: "Would you like a .prettierrc.js file to be created?",
         suffix: "\n(For overriding bundled Prettier config rules)",
         store: true,
-        when: (answers) => answers.features.includes("hasPrettier")
+        when: (answers) => answers.features.includes("prettier")
     },
+
     /**
      * Initial project directories
      */
