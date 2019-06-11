@@ -86,8 +86,6 @@ class App extends BaseYeomanGenerator {
         this.fs.copyTpl(this.templatePath("_README.md"), this.destinationPath("README.md"), this.data);
         // Handle updates to package.json file
         this._handleJsonFile({ input: "_package.json", output: "package.json", data: this.data });
-        this._sortPackageDependencies();
-        this._sortPackageKeys();
     }
 
     install() {

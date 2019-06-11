@@ -46,32 +46,35 @@ class ESLint extends BaseYeomanGenerator {
     writing() {
         const { jest, prettier } = this.features;
 
-        function eslintrcData() {
-            return {
-                env: {
-                    jest: jest ? true : undefined
-                },
-                extends: prettier ? ["airbnb-base", "prettier"] : ["airbnb-base"],
-                plugins: prettier ? ["prettier"] : []
-            };
-        }
-
-        function eslintPrettierPackages() {
-            if (prettier) {
+        this._handleJsonFile({
+            input: ".eslintrc",
+            output: ".eslintrc",
+            data: (function eslintrcData() {
                 return {
-                    devDependencies: {
-                        "eslint-config-prettier": "^4.3.0",
-                        "eslint-plugin-prettier": "^3.1.0"
-                    }
+                    env: {
+                        jest: jest ? true : undefined
+                    },
+                    extends: prettier ? ["airbnb-base", "prettier"] : ["airbnb-base"],
+                    plugins: prettier ? ["prettier"] : []
                 };
-            }
-            return {};
-        }
+            })()
+        });
 
-        this._handleJsonFile({ input: ".eslintrc", output: ".eslintrc", data: eslintrcData() });
-        this._handleJsonFile({ input: "_package.json", output: "package.json", data: eslintPrettierPackages() });
-        this._sortPackageDependencies();
-        this._sortPackageKeys();
+        this._handleJsonFile({
+            input: "_package.json",
+            output: "package.json",
+            data: (function eslintPrettierPackages() {
+                if (prettier) {
+                    return {
+                        devDependencies: {
+                            "eslint-config-prettier": "^4.3.0",
+                            "eslint-plugin-prettier": "^3.1.0"
+                        }
+                    };
+                }
+                return {};
+            })()
+        });
     }
 
     install() {

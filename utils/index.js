@@ -1,25 +1,3 @@
-const pkgOrder = [
-    "private",
-    "name",
-    "version",
-    "description",
-    "keywords",
-    "author",
-    "license",
-    "main",
-    "scripts",
-    "files",
-    "engines",
-    "jest",
-    "prettier",
-    "dependencies",
-    "devDependencies",
-    "peerDependencies",
-    "repository",
-    "bugs",
-    "homepage"
-];
-
 const usernamePattern = /^@[a-z0-9-]+\//i;
 
 function hasDataSpaces(fileData) {
@@ -31,9 +9,6 @@ function isObject(obj) {
 }
 
 function sanitizeData(keys, data) {
-    if (!isObject(data)) {
-        return {};
-    }
     return keys.reduce((accumulator, key) => {
         const value = data[key];
         if (typeof value !== "undefined") {
@@ -41,17 +16,6 @@ function sanitizeData(keys, data) {
         }
         return accumulator;
     }, {});
-}
-
-function isPackageJson(filepath) {
-    return /(package\.json)$/i.test(filepath);
-}
-
-function priorityPackageData(filepath, packageData) {
-    if (isPackageJson(filepath)) {
-        return sanitizeData(["name", "description", "version"], packageData);
-    }
-    return {};
 }
 
 /**
@@ -72,12 +36,48 @@ function sortByKeyName(obj) {
         }, {});
 }
 
+function isPackageJson(filepath) {
+    return /(package\.json)$/i.test(filepath);
+}
+
+function priorityPackageData(packageData) {
+    return sanitizeData(["name", "description", "version"], packageData);
+}
+
+function sortPackageJson(data) {
+    const pkgOrder = [
+        "private",
+        "name",
+        "version",
+        "description",
+        "keywords",
+        "author",
+        "license",
+        "main",
+        "scripts",
+        "files",
+        "engines",
+        "jest",
+        "prettier",
+        "dependencies",
+        "devDependencies",
+        "peerDependencies",
+        "repository",
+        "bugs",
+        "homepage"
+    ];
+
+    data.dependencies = sortByKeyName(data.dependencies);
+    data.devDependencies = sortByKeyName(data.devDependencies);
+    data.peerDependencies = sortByKeyName(data.peerDependencies);
+
+    return sanitizeData(pkgOrder, data);
+}
+
 module.exports = {
     hasDataSpaces,
     isPackageJson,
-    pkgOrder,
     priorityPackageData,
-    sanitizeData,
-    sortByKeyName,
+    sortPackageJson,
     usernamePattern
 };

@@ -26,7 +26,7 @@ const mkdirp = require("mkdirp");
 const yosay = require("yosay");
 
 const options = require("../config/options");
-const { hasDataSpaces, pkgOrder, priorityPackageData, sanitizeData, sortByKeyName } = require("../utils");
+const { hasDataSpaces, isPackageJson, priorityPackageData, sortPackageJson } = require("../utils");
 
 class Base extends YeomanGenerator {
     /**
@@ -75,7 +75,7 @@ class Base extends YeomanGenerator {
      */
 
     /**
-     * Handle combining multiple generator templates of the same name i.e. `_package.json` file
+     * Handle extending templates files with data i.e. `_package.json` file
      * @param  {Object} fileOptions -- {input: FILE_PATH, output: FILE_PATH, data: { optional }}
      * @return {Undefined}
      */
@@ -93,44 +93,13 @@ class Base extends YeomanGenerator {
             destination,
             this.fs[hasDataSpaces(templateData) ? "copyTpl" : "copy"](template, destination, data)
         );
+        const dataOrder = [destinationData, processedTemplateData, data];
 
-        return this.fs.extendJSON(
-            destination,
-            extend(
-                destinationData,
-                processedTemplateData,
-                data,
-                priorityPackageData(destination, processedTemplateData)
-            )
-        );
-    }
-
-    /**
-     * Alphabetize package dependencies, just like regular package install process does.
-     * Good for human-readable content.
-     * @return {Undefined}
-     */
-    _sortPackageDependencies() {
-        const pkg = this.fs.readJSON(this.destinationPath("package.json"), {});
-        const pkgBlankedDependencies = Object.assign({}, pkg, {
-            dependencies: undefined,
-            devDependencies: undefined,
-            peerDependencies: undefined
-        });
-
-        this.fs.writeJSON(this.destinationPath("package.json"), pkgBlankedDependencies);
-        // Then rewrite post-processing
-        return this.fs.extendJSON(this.destinationPath("package.json"), {
-            dependencies: sortByKeyName(pkg.dependencies),
-            devDependencies: sortByKeyName(pkg.devDependencies),
-            peerDependencies: sortByKeyName(pkg.peerDependencies)
-        });
-    }
-
-    _sortPackageKeys() {
-        const pkg = this.fs.readJSON(this.destinationPath("package.json"), {});
-        this.fs.writeJSON(this.destinationPath("package.json"), {});
-        return this.fs.extendJSON(this.destinationPath("package.json"), sanitizeData(pkgOrder, pkg));
+        if (isPackageJson(destination)) {
+            dataOrder.push(priorityPackageData(processedTemplateData));
+            return this.fs.writeJSON(destination, sortPackageJson(extend(...dataOrder)));
+        }
+        return this.fs.extendJSON(destination, extend(...dataOrder));
     }
 
     /**
@@ -158,7 +127,8 @@ class Base extends YeomanGenerator {
         const { subgenerator } = subGeneratorOptions;
         const baseMessage = !this.options["skip-welcome-message"]
             ? `'Allo 'allo! Out of the box, I include ${message}`
-            : chalk.blue("Installing base project scaffolding");
+            : /* istanbul ignore next */
+              chalk.blue("Installing base project scaffolding");
         if (subgenerator) {
             return this._messageFactory(chalk.blue(`Installing ${message} to this project location`));
         }
