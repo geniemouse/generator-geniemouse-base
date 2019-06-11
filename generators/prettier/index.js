@@ -6,7 +6,6 @@
  */
 
 const BaseYeomanGenerator = require("../base");
-const { configArray } = require("../../utils");
 
 class Prettier extends BaseYeomanGenerator {
     initializing() {
@@ -16,7 +15,11 @@ class Prettier extends BaseYeomanGenerator {
     }
 
     prompting() {
-        const prompts = configArray(this.subgen, [
+        if (!this.subgen) {
+            return;
+        }
+
+        return this.prompt([
             {
                 type: "confirm",
                 name: "prettier:prettierrc",
@@ -24,9 +27,7 @@ class Prettier extends BaseYeomanGenerator {
                 suffix: "\n(For overriding bundled Prettier config rules)",
                 store: true
             }
-        ]);
-
-        return this.prompt(prompts).then((answers) => {
+        ]).then((answers) => {
             this.prettierrc = answers["prettier:prettierrc"];
         });
     }
@@ -40,7 +41,7 @@ class Prettier extends BaseYeomanGenerator {
 
     writing() {
         // Handle updates to package.json file
-        this._handleJsonTemplate({ input: "_package.json", output: "package.json" });
+        this._handleJsonFile({ input: "_package.json", output: "package.json" });
         this._sortPackageDependencies();
         this._sortPackageKeys();
     }

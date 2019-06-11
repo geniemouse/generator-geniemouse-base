@@ -21,7 +21,7 @@ class Jest extends BaseYeomanGenerator {
 
     writing() {
         // Handle updates to package.json file
-        this._handleJsonTemplate({ input: "_package.json", output: "package.json" });
+        this._handleJsonFile({ input: "_package.json", output: "package.json" });
         this._sortPackageDependencies();
         this._sortPackageKeys();
     }

@@ -6,7 +6,6 @@
  */
 
 const BaseYeomanGenerator = require("../base");
-const { configArray } = require("../../utils");
 
 class ESLint extends BaseYeomanGenerator {
     initializing() {
@@ -16,7 +15,11 @@ class ESLint extends BaseYeomanGenerator {
     }
 
     prompting() {
-        const prompts = configArray(this.subgen, [
+        if (!this.subgen) {
+            return;
+        }
+
+        return this.prompt([
             {
                 type: "confirm",
                 name: "eslint:jest",
@@ -29,9 +32,7 @@ class ESLint extends BaseYeomanGenerator {
                 message: "Add ESLint support for Prettier?",
                 store: true
             }
-        ]);
-
-        return this.prompt(prompts).then((answers) => {
+        ]).then((answers) => {
             this.features.jest = answers["eslint:jest"];
             this.features.prettier = answers["eslint:prettier"];
         });
@@ -39,7 +40,7 @@ class ESLint extends BaseYeomanGenerator {
 
     configuring() {
         this.fs.copy(this.templatePath(".eslintignore"), this.destinationPath(".eslintignore"));
-        this.fs.copy(this.templatePath(".eslintrc"), this.destinationPath(".eslintrc"));
+        // @NOTE: `package.json` & `.eslintrc` are handled during the writing phase
     }
 
     writing() {
@@ -67,19 +68,8 @@ class ESLint extends BaseYeomanGenerator {
             return {};
         }
 
-        this.fs.extendJSON(this.destinationPath(".eslintrc"), eslintrcData());
-
-        // Handle updates to package.json file
-        // @TODO: Pass data directly
-        this._handleJsonTemplate({
-            input: "_package.json",
-            output: "package.json",
-            data: eslintPrettierPackages()
-        });
-
-        // this._handleJsonTemplate({ input: "_package.json", output: "package.json" });
-        // this.fs.extendJSON(this.destinationPath("package.json"), eslintPrettierPackages());
-
+        this._handleJsonFile({ input: ".eslintrc", output: ".eslintrc", data: eslintrcData() });
+        this._handleJsonFile({ input: "_package.json", output: "package.json", data: eslintPrettierPackages() });
         this._sortPackageDependencies();
         this._sortPackageKeys();
     }

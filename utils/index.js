@@ -22,8 +22,8 @@ const pkgOrder = [
 
 const usernamePattern = /^@[a-z0-9-]+\//i;
 
-function configArray(statement, settings) {
-    return statement ? settings : [];
+function hasDataSpaces(fileData) {
+    return /<%[=_-].*%>/g.test(JSON.stringify(fileData));
 }
 
 function isObject(obj) {
@@ -41,6 +41,17 @@ function sanitizeData(keys, data) {
         }
         return accumulator;
     }, {});
+}
+
+function isPackageJson(filepath) {
+    return /(package\.json)$/i.test(filepath);
+}
+
+function priorityPackageData(filepath, packageData) {
+    if (isPackageJson(filepath)) {
+        return sanitizeData(["name", "description", "version"], packageData);
+    }
+    return {};
 }
 
 /**
@@ -62,9 +73,10 @@ function sortByKeyName(obj) {
 }
 
 module.exports = {
-    configArray,
-    isObject,
+    hasDataSpaces,
+    isPackageJson,
     pkgOrder,
+    priorityPackageData,
     sanitizeData,
     sortByKeyName,
     usernamePattern

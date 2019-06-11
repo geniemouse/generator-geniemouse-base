@@ -10,7 +10,7 @@
  *     - _createDirectory
  *     - _installBase
  * 3. JSON & package.json utilities
- *     - _handleJsonTemplate
+ *     - _handleJsonFile
  *     - _sortPackageDependencies
  * 4. Messaging utilities
  *     - _messageFactory
@@ -26,7 +26,7 @@ const mkdirp = require("mkdirp");
 const yosay = require("yosay");
 
 const options = require("../config/options");
-const { isObject, pkgOrder, sanitizeData, sortByKeyName } = require("../utils");
+const { hasDataSpaces, pkgOrder, priorityPackageData, sanitizeData, sortByKeyName } = require("../utils");
 
 class Base extends YeomanGenerator {
     /**
@@ -74,45 +74,34 @@ class Base extends YeomanGenerator {
      * 3. JSON & package.json utilities
      */
 
-    _priorityPackageData(packageData) {
-        return sanitizeData(["name", "description", "version"], packageData);
-    }
-
-    _hasDataSpaces(templateData) {
-        return /<%[=_-].*%>/g.test(JSON.stringify(templateData));
-    }
-
-    _mergeJsonData(destination, template, data) {
-        const storedData = this.fs.readJSON(destination, {});
-        const templateData = this.fs.readJSON(template, {});
-
-        if (this._hasDataSpaces(templateData)) {
-            const tmpFileContent = this.fs.readJSON(destination, this.fs.copyTpl(template, destination, data));
-            const priorityData = this._priorityPackageData(tmpFileContent);
-            return this.fs.extendJSON(destination, extend(tmpFileContent, storedData, priorityData));
-        }
-
-        return this.fs.extendJSON(destination, extend(storedData, templateData, data || {}));
-    }
-
     /**
      * Handle combining multiple generator templates of the same name i.e. `_package.json` file
      * @param  {Object} fileOptions -- {input: FILE_PATH, output: FILE_PATH, data: { optional }}
      * @return {Undefined}
      */
-    _handleJsonTemplate(fileOptions) {
+    _handleJsonFile(fileOptions) {
         const { input, output, data } = fileOptions;
         const destination = this.destinationPath(output);
         const template = this.templatePath(input);
+        return this._mergeJsonData(destination, template, data || {});
+    }
 
-        if (this.fs.exists(destination)) {
-            return this._mergeJsonData(destination, template, data);
-        }
-        // No JSON file exists in destination location yet, so handle it as normal
-        return this.fs[this._hasDataSpaces(this.fs.readJSON(template, {})) ? "copyTpl" : "copy"](
-            template,
+    _mergeJsonData(destination, template, data) {
+        const destinationData = this.fs.readJSON(destination, {});
+        const templateData = this.fs.readJSON(template, {});
+        const processedTemplateData = this.fs.readJSON(
             destination,
-            data
+            this.fs[hasDataSpaces(templateData) ? "copyTpl" : "copy"](template, destination, data)
+        );
+
+        return this.fs.extendJSON(
+            destination,
+            extend(
+                destinationData,
+                processedTemplateData,
+                data,
+                priorityPackageData(destination, processedTemplateData)
+            )
         );
     }
 
