@@ -9,6 +9,7 @@
 1. [Out-of-the-box](#out-of-the-box)
 1. [Installation](#installation)
 1. [Configuration](#configuration)
+    1. [Sub-generators](#sub-generators)
 1. [Related links](#related-links)
 
 <!-- /MarkdownTOC -->
@@ -75,6 +76,21 @@ yo geniemouse-base
 (Calling `yo` on its own lists all the installed generators, which can be selected and run from there.)
 
 3. Yeoman will run through a series of questions; customize the choices, as you see fit.
+
+### Sub-generators
+
+Each of the project features is available as a sub-generator, which can be called individually:
+
+```
+# ESLint install
+yo geniemouse-base:eslint
+
+# Jest install
+yo geniemouse-base:jest
+
+# Prettier install
+yo geniemouse-base:prettier
+```
 
 ---
 
