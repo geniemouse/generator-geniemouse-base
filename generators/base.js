@@ -43,15 +43,17 @@ class Base extends YeomanGenerator {
         // Create initial `.yo-rc.json` file
         this.config.save();
         this.config.defaults({
+            // Currently installed features
             features: {
-                eslint: true,
-                jest: true,
-                prettier: true
+                eslint: false,
+                jest: false,
+                prettier: false
             },
             prettierrc: false,
+            // Default prompt values, where prompts are stored
             promptValues: {
                 directoriesList: ["app"],
-                featuresList: ["eslint", "prettier", "jest"]
+                featuresList: []
             }
         });
 
@@ -69,6 +71,18 @@ class Base extends YeomanGenerator {
         return mkdirp(dir, (err) => {
             return this.log(err || `${chalk.green("create directory")} ${dir}`);
         });
+    }
+
+    _setFeature(featureData) {
+        const promptValues = this.config.get("promptValues");
+        const updatedFeatures = Object.assign({}, this.config.get("features"), featureData);
+        promptValues.featuresList = Object.keys(updatedFeatures).filter((key) => {
+            if (updatedFeatures[key]) {
+                return key;
+            }
+        });
+        this.config.set("features", updatedFeatures);
+        this.config.set("promptValues", promptValues);
     }
 
     _installBase() {

@@ -11,6 +11,7 @@ const BaseYeomanGenerator = require("../base");
 
 class Jest extends BaseYeomanGenerator {
     initializing() {
+        this._setFeature({ jest: true });
         this._welcomeMessage("Jest", { subgenerator: true });
         this.subgen = !this.options.generator;
     }

@@ -9,6 +9,7 @@ const BaseYeomanGenerator = require("../base");
 
 class Prettier extends BaseYeomanGenerator {
     initializing() {
+        this._setFeature({ prettier: true });
         this._welcomeMessage("Prettier", { subgenerator: true });
         this.subgen = !this.options.generator;
     }
