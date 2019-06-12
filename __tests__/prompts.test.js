@@ -4,7 +4,7 @@ const prompts = require("../config/prompts");
 
 const currentRootDirectory = path.basename(process.cwd());
 
-const { appname, directories, prettierrc, version } = prompts.reduce((result, item) => {
+const { appname, directoriesList, prettierrc, version } = prompts.reduce((result, item) => {
     result[item.name] = item;
     return result;
 }, {});
@@ -61,19 +61,19 @@ describe("Generator prompts", () => {
 
     describe("directories", () => {
         test("directory input to be stored", () => {
-            expect(directories.default).toBe(undefined);
-            expect(directories.store).toBe(true);
+            expect(directoriesList.default).toBe(undefined);
+            expect(directoriesList.store).toBe(true);
         });
 
         test("filtering an empty string returns empty array", () => {
-            expect(directories.filter("")).toStrictEqual([]);
-            expect(directories.filter("   ")).toStrictEqual([]);
+            expect(directoriesList.filter("")).toStrictEqual([]);
+            expect(directoriesList.filter("   ")).toStrictEqual([]);
         });
 
         test("filters both strings & array inputs correctly", () => {
             const expectedResult = ["one", "two/sub", "three"];
-            expect(directories.filter("one, two/sub, three")).toStrictEqual(expectedResult);
-            expect(directories.filter(expectedResult)).toStrictEqual(expectedResult);
+            expect(directoriesList.filter("one, two/sub, three")).toStrictEqual(expectedResult);
+            expect(directoriesList.filter(expectedResult)).toStrictEqual(expectedResult);
         });
     });
 });

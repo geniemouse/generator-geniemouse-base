@@ -50,7 +50,7 @@ const prompts = [
      */
     {
         type: "checkbox",
-        name: "features",
+        name: "featuresList",
         message: "Which features would you like to include?",
         store: true,
         choices: [
@@ -81,7 +81,7 @@ const prompts = [
         message: "Would you like a .prettierrc.js file to be created?",
         suffix: "\n(For overriding bundled Prettier config rules)",
         default: false,
-        when: (answers) => answers.features.includes("prettier")
+        when: (answers) => answers.featuresList.includes("prettier")
     },
 
     /**
@@ -89,7 +89,7 @@ const prompts = [
      */
     {
         type: "input",
-        name: "directories",
+        name: "directoriesList",
         message: "Initial directories:",
         suffix: "\n(Comma-separated list, nested directories separated by /)",
         store: true,

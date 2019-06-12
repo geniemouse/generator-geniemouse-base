@@ -13,8 +13,8 @@ describe("App generator", () => {
             .run(path.join(__dirname, app))
             .withPrompts({
                 description: "Lorem ipsum dolor",
-                directories: ["one", "two/sub", "three"],
-                features: [],
+                directoriesList: ["one", "two/sub", "three"],
+                featuresList: [],
                 version: "1.1.1"
             })
             .on("end", done);
@@ -71,8 +71,8 @@ describe("Package.json merge", () => {
             .run(path.join(__dirname, app))
             .withPrompts({
                 description: "Overwrite package",
-                directories: [],
-                features: [],
+                directoriesList: [],
+                featuresList: [],
                 version: "1.1.2"
             })
             .on("ready", (generator) => {
@@ -99,8 +99,8 @@ describe("Add ESLint feature", () => {
         helpers
             .run(path.join(__dirname, app))
             .withPrompts({
-                directories: [],
-                features: ["eslint"]
+                directoriesList: [],
+                featuresList: ["eslint"]
             })
             .on("end", done);
     });
@@ -119,8 +119,8 @@ describe("Add Jest feature", () => {
         helpers
             .run(path.join(__dirname, app))
             .withPrompts({
-                directories: [],
-                features: ["jest"]
+                directoriesList: [],
+                featuresList: ["jest"]
             })
             .on("end", done);
     });
@@ -139,8 +139,8 @@ describe("Add Prettier feature", () => {
         helpers
             .run(path.join(__dirname, app))
             .withPrompts({
-                directories: [],
-                features: ["prettier"],
+                directoriesList: [],
+                featuresList: ["prettier"],
                 prettierrc: true
             })
             .on("end", done);

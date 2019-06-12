@@ -31,29 +31,38 @@ class App extends BaseYeomanGenerator {
             & ${chalk.green(".gitignore")} files. Nice and simple!`
         );
 
-        this.data = {};
-        this.directories = [];
-        this.features = [];
+        this.answers = {};
+        this.directoriesList = [];
+        this.featuresList = [];
     }
 
     prompting() {
         return this.prompt(prompts).then((answers) => {
-            const additionalData = {
-                friendlyname: this._setFriendlyName(answers.appname),
-                features: this._setFeatureFlags(answers.features),
-                // Information:
-                // Add details of the Yeoman generator being used.
-                // Useful in debugging and generated documentation.
-                generator: {
-                    date: new Date().toISOString().split("T")[0],
-                    name: generatorPackageJson.name,
-                    version: generatorPackageJson.version
-                }
-            };
+            // Update config
+            this.config.set("features", this._setFeatureFlags(answers.featuresList));
+            this.config.set("prettierrc", this.answers.prettierrc);
 
-            this.data = Object.assign({}, answers, additionalData);
-            this.directories = answers.directories;
-            this.features = answers.features;
+            this.directoriesList = answers.directoriesList;
+            this.featuresList = answers.featuresList;
+
+            // Combine all answers data; the set passed to template files
+            this.answers = Object.assign(
+                {},
+                answers,
+                // Add any additional data:
+                {
+                    friendlyname: this._setFriendlyName(answers.appname),
+                    features: this.config.get("features"),
+                    // Information:
+                    // Add details of the Yeoman generator being used.
+                    // Useful in debugging and generated documentation.
+                    generator: {
+                        date: new Date().toISOString().split("T")[0],
+                        name: generatorPackageJson.name,
+                        version: generatorPackageJson.version
+                    }
+                }
+            );
         });
     }
 
@@ -62,13 +71,10 @@ class App extends BaseYeomanGenerator {
         rootFiles.forEach((file) => {
             this.fs.copy(this.templatePath(file), this.destinationPath(file));
         });
-
-        this.config.set("features", this._setFeatureFlags(this.features));
-        this.config.set("prettierrc", this.data["prettier:prettierrc"]);
     }
 
     default() {
-        this.features.forEach((feature) => {
+        this.featuresList.forEach((feature) => {
             this.composeWith(require.resolve(`../${feature}`), {
                 generator: true
             });
@@ -76,15 +82,15 @@ class App extends BaseYeomanGenerator {
     }
 
     directoriesTask() {
-        this.directories.forEach((dir) => {
+        this.directoriesList.forEach((dir) => {
             this._createDirectory(dir);
         });
     }
 
     writing() {
-        this.fs.copyTpl(this.templatePath("_README.md"), this.destinationPath("README.md"), this.data);
+        this.fs.copyTpl(this.templatePath("_README.md"), this.destinationPath("README.md"), this.answers);
         // Handle updates to package.json file
-        this._handleJsonFile({ input: "_package.json", output: "package.json", data: this.data });
+        this._handleJsonFile({ input: "_package.json", output: "package.json", data: this.answers });
     }
 
     install() {

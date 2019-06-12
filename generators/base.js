@@ -50,8 +50,8 @@ class Base extends YeomanGenerator {
             },
             prettierrc: false,
             promptValues: {
-                directories: ["app"],
-                features: ["eslint", "prettier", "jest"]
+                directoriesList: ["app"],
+                featuresList: ["eslint", "prettier", "jest"]
             }
         });
 
