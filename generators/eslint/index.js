@@ -66,15 +66,12 @@ class ESLint extends BaseYeomanGenerator {
             input: "_package.json",
             output: "package.json",
             data: (function eslintPrettierPackages() {
-                if (prettier) {
-                    return {
-                        devDependencies: {
-                            "eslint-config-prettier": "^4.3.0",
-                            "eslint-plugin-prettier": "^3.1.0"
-                        }
-                    };
-                }
-                return {};
+                return {
+                    devDependencies: {
+                        "eslint-config-prettier": prettier ? "^4.3.0" : undefined,
+                        "eslint-plugin-prettier": prettier ? "^3.1.0" : undefined
+                    }
+                };
             })()
         });
     }
