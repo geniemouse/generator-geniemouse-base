@@ -152,6 +152,10 @@ class Base extends YeomanGenerator {
      * @return {Function}
      */
     _messageFactory(message) {
+        if (this.options["skip-messages"]) {
+            return;
+        }
+
         return !this.options["skip-welcome-message"] && !this.options.generator
             ? this.log(yosay(message))
             : this.log(message);
