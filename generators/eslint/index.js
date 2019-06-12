@@ -9,7 +9,7 @@ const BaseYeomanGenerator = require("../base");
 
 class ESLint extends BaseYeomanGenerator {
     initializing() {
-        this._setFeature({ eslint: true });
+        this._setFeatures({ eslint: true });
         this._welcomeMessage("ESLint", { subgenerator: true });
         this.subgen = !this.options.generator;
         this.features = {};
