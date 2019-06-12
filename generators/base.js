@@ -73,6 +73,10 @@ class Base extends YeomanGenerator {
         });
     }
 
+    _getFeature(featureName) {
+        return this.config.get("features")[featureName];
+    }
+
     _setFeatures(featuresData) {
         const promptValues = this.config.get("promptValues");
         const updatedFeatures = Object.assign({}, this.config.get("features"), featuresData);
