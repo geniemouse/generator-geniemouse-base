@@ -55,11 +55,6 @@ const prompts = [
         store: true,
         choices: [
             {
-                name: " ESLint",
-                value: "eslint",
-                checked: true
-            },
-            {
                 name: " Prettier",
                 value: "prettier",
                 checked: true
@@ -67,6 +62,11 @@ const prompts = [
             {
                 name: " Jest",
                 value: "jest",
+                checked: true
+            },
+            {
+                name: " ESLint",
+                value: "eslint",
                 checked: true
             }
         ]
