@@ -1,5 +1,11 @@
 # Change log
 
+## v2.0.1
+
+_13 June, 2019_
+
+-   Hotfix for `npm` publish missing-out `.gitignore` file. Renamed all dot-file templates
+
 ## v2.0.0
 
 _13 June, 2019_
