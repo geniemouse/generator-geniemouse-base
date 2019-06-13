@@ -52,13 +52,6 @@ describe("Generator prompts", () => {
         });
     });
 
-    describe("prettierrc", () => {
-        test("prettierrc input to be false by default", () => {
-            expect(prettierrc.default).toBe(false);
-            expect(prettierrc.store).toBe(undefined);
-        });
-    });
-
     describe("directories", () => {
         test("directory input to be stored", () => {
             expect(directoriesList.default).toBe(undefined);

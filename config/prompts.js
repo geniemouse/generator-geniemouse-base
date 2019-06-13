@@ -73,18 +73,6 @@ const prompts = [
     },
 
     /**
-     * Optional .prettierrc file step, if Prettier feature has been requested
-     */
-    {
-        type: "confirm",
-        name: "prettierrc",
-        message: "Would you like a .prettierrc.js file to be created?",
-        suffix: "\n(For overriding bundled Prettier config rules)",
-        default: false,
-        when: (answers) => answers.featuresList.includes("prettier")
-    },
-
-    /**
      * Initial project directories
      */
     {

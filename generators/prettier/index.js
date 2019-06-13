@@ -11,14 +11,9 @@ class Prettier extends BaseYeomanGenerator {
     initializing() {
         this.config.set("prettier", true);
         this._welcomeSubGeneratorMessage("Prettier");
-        this.subgen = !this.options.generator;
     }
 
     prompting() {
-        if (!this.subgen) {
-            return;
-        }
-
         return this.prompt([
             {
                 type: "confirm",

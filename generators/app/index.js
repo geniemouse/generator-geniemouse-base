@@ -46,9 +46,6 @@ class App extends BaseYeomanGenerator {
                 return accumulator;
             }, {});
 
-            // @TODO: This should be coming out when we hand off to Prettier sub-generator
-            this.config.set("prettierrc", answers.prettierrc);
-
             this.directoriesList = answers.directoriesList;
             this.featuresList = answers.featuresList;
 
