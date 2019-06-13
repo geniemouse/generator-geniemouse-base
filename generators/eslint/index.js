@@ -15,14 +15,14 @@ class ESLint extends BaseYeomanGenerator {
 
     configuring() {
         // @note: `package.json` & `.eslintrc` are handled during the writing phase
-        this.fs.copy(this.templatePath(".eslintignore"), this.destinationPath(".eslintignore"));
+        this.fs.copy(this.templatePath("_eslintignore"), this.destinationPath(".eslintignore"));
     }
 
     writing() {
         const { jest, prettier } = this.config.getAll();
 
         this._handleJsonFile({
-            input: ".eslintrc",
+            input: "_eslintrc",
             output: ".eslintrc",
             data: (function eslintrcData() {
                 return {
