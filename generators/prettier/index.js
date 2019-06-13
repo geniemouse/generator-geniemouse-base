@@ -28,9 +28,9 @@ class Prettier extends BaseYeomanGenerator {
     }
 
     configuring() {
-        this.fs.copy(this.templatePath(".prettierignore"), this.destinationPath(".prettierignore"));
+        this.fs.copy(this.templatePath("_prettierignore"), this.destinationPath(".prettierignore"));
         if (this.config.get("prettierrc")) {
-            this.fs.copy(this.templatePath(".prettierrc.js"), this.destinationPath(".prettierrc.js"));
+            this.fs.copy(this.templatePath("_prettierrc.js"), this.destinationPath(".prettierrc.js"));
         }
     }
 
