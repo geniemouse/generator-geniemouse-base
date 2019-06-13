@@ -49,3 +49,28 @@ describe("Jest sub-generator", () => {
         });
     });
 });
+
+describe("ESLint > Jest: ESLint settings updated", () => {
+    beforeAll((done) => {
+        helpers
+            .run(path.join(__dirname, subGen))
+            .withLocalConfig({
+                testingNote: "setting localConfig",
+                eslint: true,
+                jest: true
+            })
+            .withOptions({
+                "generator": undefined,
+                "skip-messages": true
+            })
+            .on("end", done);
+    });
+
+    test(".eslintrc file has expected Jest values", () => {
+        assert.jsonFileContent(".eslintrc", {
+            env: {
+                jest: true
+            }
+        });
+    });
+});

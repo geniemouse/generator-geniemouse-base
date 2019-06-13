@@ -18,13 +18,6 @@ class App extends BaseYeomanGenerator {
         return capitalize(str.replace(usernamePattern, "").replace(/-/g, " "));
     }
 
-    _setFeatureFlags(features) {
-        return features.reduce((accumulator, feature) => {
-            accumulator[feature] = features.includes(feature);
-            return accumulator;
-        }, {});
-    }
-
     initializing() {
         this._welcomeMessage(
             `${chalk.green(".editorconfig")}, ${chalk.green(".gitattributes")}

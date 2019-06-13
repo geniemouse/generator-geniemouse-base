@@ -61,3 +61,36 @@ describe("Prettier sub-generator", () => {
         });
     });
 });
+
+describe("ESLint > Prettier: ESLint settings updated", () => {
+    beforeAll((done) => {
+        helpers
+            .run(path.join(__dirname, subGen))
+            .withLocalConfig({
+                testingNote: "setting localConfig",
+                eslint: true,
+                prettier: true
+            })
+            .withOptions({
+                "generator": undefined,
+                "skip-messages": true
+            })
+            .on("end", done);
+    });
+
+    test(".eslintrc file has expected Prettier values", () => {
+        assert.jsonFileContent(".eslintrc", {
+            extends: ["airbnb-base", "prettier"],
+            plugins: ["prettier"]
+        });
+    });
+
+    test("[package.json] devDependencies include `eslint-*-prettier` packages", () => {
+        assert.jsonFileContent("package.json", {
+            devDependencies: {
+                "eslint-config-prettier": "^4.3.0",
+                "eslint-plugin-prettier": "^3.1.0"
+            }
+        });
+    });
+});
