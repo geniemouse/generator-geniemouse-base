@@ -13,7 +13,6 @@ class Jest extends BaseYeomanGenerator {
     initializing() {
         this.config.set("jest", true);
         this._welcomeSubGeneratorMessage("Jest");
-        this.subgen = !this.options.generator;
     }
 
     configuring() {

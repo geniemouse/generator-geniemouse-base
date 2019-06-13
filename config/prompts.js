@@ -15,6 +15,7 @@ const prompts = [
         name: "appname",
         message: "Project app name?",
         suffix: "\n(Any entry will be kebab-cased)",
+        store: true,
         default: path.basename(process.cwd()),
         filter: (str) => {
             const s = str.trim();
@@ -34,6 +35,7 @@ const prompts = [
         type: "input",
         name: "version",
         message: "Version?",
+        store: true,
         default: "1.0.0",
         validate: (str) => {
             return /^(\d+.){2}\d+$/.test(str.trim());
@@ -42,7 +44,8 @@ const prompts = [
     {
         type: "input",
         name: "description",
-        message: "Description:"
+        message: "Description:",
+        store: true
     },
 
     /**
@@ -52,7 +55,6 @@ const prompts = [
         type: "checkbox",
         name: "featuresList",
         message: "Which features would you like to include?",
-        store: true,
         choices: [
             {
                 name: " Prettier",

@@ -11,8 +11,6 @@ class ESLint extends BaseYeomanGenerator {
     initializing() {
         this.config.set("eslint", true);
         this._welcomeSubGeneratorMessage("ESLint");
-        this.subgen = !this.options.generator;
-        this.features = {};
     }
 
     configuring() {

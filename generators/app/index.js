@@ -12,9 +12,21 @@ const yosay = require("yosay");
 const BaseYeomanGenerator = require("../base");
 const prompts = require("../../config/prompts");
 const { usernamePattern } = require("../../utils");
-const generatorPackageJson = require("../../package.json");
 
 class App extends BaseYeomanGenerator {
+    constructor(args, opts) {
+        // Don't replace Generator's parameters ;)
+        super(args, opts);
+
+        // @note: be careful adding config defaults
+        // target them to specific generators
+        this.config.defaults({
+            promptValues: {
+                directoriesList: ["app"]
+            }
+        });
+    }
+
     _setFriendlyName(str) {
         return capitalize(str.replace(usernamePattern, "").replace(/-/g, " "));
     }
@@ -56,16 +68,7 @@ class App extends BaseYeomanGenerator {
                 // Add any additional data:
                 {
                     friendlyname: this._setFriendlyName(answers.appname),
-                    features: features,
-                    // @TODO: Remove generator block, not in use
-                    // Information:
-                    // Add details of the Yeoman generator being used.
-                    // Useful in debugging and generated documentation.
-                    generator: {
-                        date: new Date().toISOString().split("T")[0],
-                        name: generatorPackageJson.name,
-                        version: generatorPackageJson.version
-                    }
+                    features: features
                 }
             );
         });
