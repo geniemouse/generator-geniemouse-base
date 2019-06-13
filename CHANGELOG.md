@@ -1,5 +1,16 @@
 # Change log
 
+## v2.0.0
+
+_13 June, 2019_
+
+-   Update generators & sub-generators to use `.yo-rc.json` file to store/share set-up information
+-   Remove duplication of prompt questions between main and Prettier sub-generator
+-   Remove prompt questions from the ESLint sub-generator. If ESLint is already installed, running the Prettier or Jest sub-gnerators automatically re-runs ESLint to update its configuration
+-   Messaging functionality refactored
+
+---
+
 ## v1.3.0
 
 _11 June, 2019_
