@@ -40,22 +40,8 @@ class Base extends YeomanGenerator {
         // Don't replace Generator's parameters ;)
         super(args, opts);
 
-        // Create initial `.yo-rc.json` file
+        // Create initial `.yo-rc.json` file, if it doesn't exist already
         this.config.save();
-        this.config.defaults({
-            // Currently installed features
-            features: {
-                eslint: false,
-                jest: false,
-                prettier: false
-            },
-            prettierrc: false,
-            // Default prompt values, where prompts are stored
-            promptValues: {
-                directoriesList: ["app"],
-                featuresList: []
-            }
-        });
 
         // Generator running with current options flags...
         Object.keys(options).map((optionName) => {
@@ -71,22 +57,6 @@ class Base extends YeomanGenerator {
         return mkdirp(dir, (err) => {
             return this.log(err || `${chalk.green("create directory")} ${dir}`);
         });
-    }
-
-    _getFeature(featureName) {
-        return this.config.get("features")[featureName];
-    }
-
-    _setFeatures(featuresData) {
-        const promptValues = this.config.get("promptValues");
-        const updatedFeatures = Object.assign({}, this.config.get("features"), featuresData);
-        promptValues.featuresList = Object.keys(updatedFeatures).filter((key) => {
-            if (updatedFeatures[key]) {
-                return key;
-            }
-        });
-        this.config.set("features", updatedFeatures);
-        this.config.set("promptValues", promptValues);
     }
 
     _installBase() {

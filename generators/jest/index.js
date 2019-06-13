@@ -11,13 +11,21 @@ const BaseYeomanGenerator = require("../base");
 
 class Jest extends BaseYeomanGenerator {
     initializing() {
-        this._setFeatures({ jest: true });
+        this.config.set("jest", true);
         this._welcomeMessage("Jest", { subgenerator: true });
         this.subgen = !this.options.generator;
     }
 
     configuring() {
         this._createDirectory("__tests__");
+    }
+
+    updateESLintConfiguration() {
+        if (this.config.get("eslint")) {
+            this.composeWith(require.resolve(`../eslint`), {
+                "skip-messages": true
+            });
+        }
     }
 
     writing() {

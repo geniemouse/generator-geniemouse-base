@@ -38,9 +38,14 @@ class App extends BaseYeomanGenerator {
 
     prompting() {
         return this.prompt(prompts).then((answers) => {
-            // Update config
-            this.config.set("features", this._setFeatureFlags(answers.featuresList));
-            this.config.set("prettierrc", this.answers.prettierrc);
+            const features = answers.featuresList.reduce((accumulator, feature) => {
+                this.config.set(feature, true);
+                accumulator[feature] = true;
+                return accumulator;
+            }, {});
+
+            // @TODO: This should be coming out when we hand off to Prettier sub-generator
+            this.config.set("prettierrc", answers.prettierrc);
 
             this.directoriesList = answers.directoriesList;
             this.featuresList = answers.featuresList;
@@ -52,7 +57,8 @@ class App extends BaseYeomanGenerator {
                 // Add any additional data:
                 {
                     friendlyname: this._setFriendlyName(answers.appname),
-                    features: this.config.get("features"),
+                    features: features,
+                    // @TODO: Remove generator block, not in use
                     // Information:
                     // Add details of the Yeoman generator being used.
                     // Useful in debugging and generated documentation.

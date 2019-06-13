@@ -9,7 +9,7 @@ const BaseYeomanGenerator = require("../base");
 
 class Prettier extends BaseYeomanGenerator {
     initializing() {
-        this._setFeatures({ prettier: true });
+        this.config.set("prettier", true);
         this._welcomeMessage("Prettier", { subgenerator: true });
         this.subgen = !this.options.generator;
     }
@@ -36,6 +36,14 @@ class Prettier extends BaseYeomanGenerator {
         this.fs.copy(this.templatePath(".prettierignore"), this.destinationPath(".prettierignore"));
         if (this.config.get("prettierrc")) {
             this.fs.copy(this.templatePath(".prettierrc.js"), this.destinationPath(".prettierrc.js"));
+        }
+    }
+
+    updateESLintConfiguration() {
+        if (this.config.get("eslint")) {
+            this.composeWith(require.resolve(`../eslint`), {
+                "skip-messages": true
+            });
         }
     }
 

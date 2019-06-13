@@ -68,58 +68,62 @@ describe("ESLint sub-generator", () => {
             version: undefined
         });
     });
+});
 
-    describe("When installed alongside Jest", () => {
-        beforeAll((done) => {
-            helpers
-                .run(path.join(__dirname, subGen))
-                .withOptions({
-                    generator: undefined
-                })
-                .withPrompts({
-                    "eslint:jest": true,
-                    "eslint:prettier": false
-                })
-                .on("end", done);
+describe("ESLint installed alongside Jest", () => {
+    beforeAll((done) => {
+        helpers
+            .run(path.join(__dirname, subGen))
+            .withLocalConfig({
+                testingNote: "setting localConfig",
+                eslint: true,
+                jest: true
+            })
+            .withOptions({
+                "generator": undefined,
+                "skip-messages": true
+            })
+            .on("end", done);
+    });
+
+    test(".eslintrc file has expected values", () => {
+        assert.jsonFileContent(".eslintrc", {
+            env: {
+                jest: true
+            }
         });
+    });
+});
 
-        test(".eslintrc file has expected values", () => {
-            assert.jsonFileContent(".eslintrc", {
-                env: {
-                    jest: true
-                }
-            });
+describe("ESLint installed alongside Prettier", () => {
+    beforeAll((done) => {
+        helpers
+            .run(path.join(__dirname, subGen))
+            .withLocalConfig({
+                testingNote: "setting localConfig",
+                eslint: true,
+                prettier: true
+            })
+            .withOptions({
+                "generator": undefined,
+                "skip-messages": true
+            })
+            .on("end", done);
+    });
+
+    test(".eslintrc file has expected values", () => {
+        assert.jsonFileContent(".eslintrc", {
+            extends: ["airbnb-base", "prettier"],
+            plugins: ["prettier"]
         });
     });
 
-    describe("When installed alongside Prettier", () => {
-        beforeAll((done) => {
-            helpers
-                .run(path.join(__dirname, subGen))
-                .withOptions({
-                    generator: undefined
-                })
-                .withPrompts({
-                    "eslint:jest": false,
-                    "eslint:prettier": true
-                })
-                .on("end", done);
-        });
-
-        test(".eslintrc file has expected values", () => {
-            assert.jsonFileContent(".eslintrc", {
-                extends: ["airbnb-base", "prettier"],
-                plugins: ["prettier"]
-            });
-        });
-
-        test("[package.json] devDependencies have expected packages", () => {
-            assert.jsonFileContent("package.json", {
-                devDependencies: {
-                    "eslint-config-prettier": "^4.3.0",
-                    "eslint-plugin-prettier": "^3.1.0"
-                }
-            });
+    test("[package.json] devDependencies have expected packages", () => {
+        assert.jsonFileContent("package.json", {
+            devDependencies: {
+                "eslint-config-prettier": "^4.3.0",
+                "eslint-plugin-prettier": "^3.1.0"
+            }
         });
     });
 });
