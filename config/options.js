@@ -3,7 +3,7 @@ const options = {
         desc: "Skips the installation of dependencies",
         type: Boolean
     },
-    "skip-messages": {
+    "skip-message": {
         desc: "Skip all messaging",
         type: Boolean
     },

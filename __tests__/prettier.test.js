@@ -67,13 +67,13 @@ describe("ESLint > Prettier: ESLint settings updated", () => {
         helpers
             .run(path.join(__dirname, subGen))
             .withLocalConfig({
-                testingNote: "setting localConfig",
+                testingNote: "localConfig (equiv: this.config.defaults)",
                 eslint: true,
                 prettier: true
             })
             .withOptions({
                 "generator": undefined,
-                "skip-messages": true
+                "skip-message": true
             })
             .on("end", done);
     });

@@ -10,13 +10,13 @@ const BaseYeomanGenerator = require("../base");
 class ESLint extends BaseYeomanGenerator {
     initializing() {
         this.config.set("eslint", true);
-        this._welcomeMessage("ESLint", { subgenerator: true });
+        this._welcomeSubGeneratorMessage("ESLint");
         this.subgen = !this.options.generator;
         this.features = {};
     }
 
     configuring() {
-        // @NOTE: `package.json` & `.eslintrc` are handled during the writing phase
+        // @note: `package.json` & `.eslintrc` are handled during the writing phase
         this.fs.copy(this.templatePath(".eslintignore"), this.destinationPath(".eslintignore"));
     }
 
@@ -56,9 +56,7 @@ class ESLint extends BaseYeomanGenerator {
     }
 
     end() {
-        if (this.subgen) {
-            this._goodbyeMessage("ESLint", { subgenerator: true });
-        }
+        this._goodbyeMessage("ESLint");
     }
 }
 

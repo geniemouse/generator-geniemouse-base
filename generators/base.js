@@ -15,8 +15,8 @@
  *     - _handleJsonFile
  *     - _mergeJsonData
  * 4. Messaging utilities
- *     - _messageFactory
- *     - _welcomeMessage
+ *     - _logMessage
+ *     - _welcomeSubGeneratorMessage
  *     - _goodbyeMessage
  */
 
@@ -25,7 +25,6 @@ const chalk = require("chalk");
 const commandExists = require("command-exists").sync;
 const extend = require("deep-extend");
 const mkdirp = require("mkdirp");
-const yosay = require("yosay");
 
 const options = require("../config/options");
 const { hasDataSpaces, isPackageJson, priorityPackageData, sortPackageJson } = require("../utils");
@@ -117,53 +116,40 @@ class Base extends YeomanGenerator {
      */
 
     /**
-     * Decide message output: basic log or yosay message
+     * Read various message options, log message or not
      * @param  {String} message
-     * @return {Function}
+     * @return {Function|Undefined}
      */
-    _messageFactory(message) {
-        if (this.options["skip-messages"]) {
+    _logMessage(message) {
+        if (this.options["skip-message"] || this.options["generator"]) {
             return;
         }
-
-        return !this.options["skip-welcome-message"] && !this.options.generator
-            ? this.log(yosay(message))
-            : this.log(message);
+        return this.log(message);
     }
 
     /**
-     * Generator & sub-generator `initializing` message template
-     * @param  {String} message
-     * @param  {Object} subGeneratorOptions -- { subgenerator: true }
+     * Log welcome message for sub-generators
+     * @param  {String} generatorName
      * @return {Function}
      */
-    _welcomeMessage(message, subGeneratorOptions = {}) {
-        const { subgenerator } = subGeneratorOptions;
-        const baseMessage = !this.options["skip-welcome-message"]
-            ? `'Allo 'allo! Out of the box, I include ${message}`
-            : /* istanbul ignore next */
-              chalk.blue("Installing base project scaffolding");
-        if (subgenerator) {
-            return this._messageFactory(chalk.blue(`Installing ${message} to this project location`));
-        }
-        return this._messageFactory(baseMessage);
+    _welcomeSubGeneratorMessage(generatorName) {
+        return this._logMessage(chalk.blue(`Installing ${generatorName}`));
     }
 
     /**
-     * Generator & sub-generator `end` message template
-     * @param  {String} message
-     * @param  {Object} subGeneratorOptions -- { subgenerator: true }
+     * Generator `end` message template
+     * @param  {String} generatorName
+     * @param  {Object} messageOptions -- { showReadMe: true }
      * @return {Function}
      */
-    _goodbyeMessage(message, subGeneratorOptions = {}) {
-        const { subgenerator } = subGeneratorOptions;
-        const baseMessage = `${chalk.blue("Finished generating base project files")}. See the ${chalk.bold.italic(
-            "README.md"
-        )} file further details\n`;
-        if (subgenerator) {
-            return this._messageFactory(chalk.blue(`Finished installing ${message}`));
+    _goodbyeMessage(generatorName, messageOptions = {}) {
+        const { showReadMe } = messageOptions;
+        const readMeMessage = `See the ${chalk.bold.italic("README.md")} file further details.\n`;
+        let mainMessage = chalk.blue(`Finished installing ${generatorName}\n`);
+        if (showReadMe) {
+            mainMessage += readMeMessage;
         }
-        return this._messageFactory(baseMessage);
+        return this._logMessage(mainMessage);
     }
 }
 

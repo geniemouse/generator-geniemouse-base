@@ -7,6 +7,7 @@
 
 const chalk = require("chalk");
 const { capitalize } = require("lodash");
+const yosay = require("yosay");
 
 const BaseYeomanGenerator = require("../base");
 const prompts = require("../../config/prompts");
@@ -18,9 +19,17 @@ class App extends BaseYeomanGenerator {
         return capitalize(str.replace(usernamePattern, "").replace(/-/g, " "));
     }
 
+    _welcomeMessage(message) {
+        if (this.options["skip-welcome-message"] || this.options["skip-message"]) {
+            return this.log(chalk.blue("Installing project scaffolding"));
+        }
+        return this.log(yosay(message));
+    }
+
     initializing() {
         this._welcomeMessage(
-            `${chalk.green(".editorconfig")}, ${chalk.green(".gitattributes")}
+            `'Allo 'allo! Out of the box, I can install
+            ${chalk.green(".editorconfig")}, ${chalk.green(".gitattributes")}
             & ${chalk.green(".gitignore")} files. Nice and simple!`
         );
 
@@ -97,7 +106,7 @@ class App extends BaseYeomanGenerator {
     }
 
     end() {
-        this._goodbyeMessage();
+        this._goodbyeMessage("skeleton project files", { showReadMe: true });
     }
 }
 

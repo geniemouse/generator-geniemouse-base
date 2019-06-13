@@ -55,13 +55,13 @@ describe("ESLint > Jest: ESLint settings updated", () => {
         helpers
             .run(path.join(__dirname, subGen))
             .withLocalConfig({
-                testingNote: "setting localConfig",
+                testingNote: "localConfig (equiv: this.config.defaults)",
                 eslint: true,
                 jest: true
             })
             .withOptions({
                 "generator": undefined,
-                "skip-messages": true
+                "skip-message": true
             })
             .on("end", done);
     });

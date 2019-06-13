@@ -12,7 +12,7 @@ const BaseYeomanGenerator = require("../base");
 class Jest extends BaseYeomanGenerator {
     initializing() {
         this.config.set("jest", true);
-        this._welcomeMessage("Jest", { subgenerator: true });
+        this._welcomeSubGeneratorMessage("Jest");
         this.subgen = !this.options.generator;
     }
 
@@ -23,7 +23,7 @@ class Jest extends BaseYeomanGenerator {
     updateESLintConfiguration() {
         if (this.config.get("eslint")) {
             this.composeWith(require.resolve(`../eslint`), {
-                "skip-messages": true
+                "skip-message": true
             });
         }
     }
@@ -37,9 +37,7 @@ class Jest extends BaseYeomanGenerator {
     }
 
     end() {
-        if (this.subgen) {
-            this._goodbyeMessage("Jest", { subgenerator: true });
-        }
+        this._goodbyeMessage("Jest");
     }
 }
 
