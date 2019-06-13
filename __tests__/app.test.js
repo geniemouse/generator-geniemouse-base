@@ -98,6 +98,9 @@ describe("Add ESLint feature", () => {
     beforeAll((done) => {
         helpers
             .run(path.join(__dirname, app))
+            .withOptions({
+                "skip-welcome-message": true
+            })
             .withPrompts({
                 directoriesList: [],
                 featuresList: ["eslint"]
@@ -118,6 +121,9 @@ describe("Add Jest feature", () => {
     beforeAll((done) => {
         helpers
             .run(path.join(__dirname, app))
+            .withOptions({
+                "skip-welcome-message": true
+            })
             .withPrompts({
                 directoriesList: [],
                 featuresList: ["jest"]
@@ -138,6 +144,9 @@ describe("Add Prettier feature", () => {
     beforeAll((done) => {
         helpers
             .run(path.join(__dirname, app))
+            .withOptions({
+                "skip-welcome-message": true
+            })
             .withPrompts({
                 directoriesList: [],
                 featuresList: ["prettier"],
