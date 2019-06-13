@@ -75,10 +75,10 @@ class App extends BaseYeomanGenerator {
     }
 
     configuring() {
-        const rootFiles = [".editorconfig", ".gitattributes", ".gitignore", "CHANGELOG.md"];
-        rootFiles.forEach((file) => {
-            this.fs.copy(this.templatePath(file), this.destinationPath(file));
-        });
+        this.fs.copy(this.templatePath("_editorconfig"), this.destinationPath(".editorconfig"));
+        this.fs.copy(this.templatePath("_gitattributes"), this.destinationPath(".gitattributes"));
+        this.fs.copy(this.templatePath("_gitignore"), this.destinationPath(".gitignore"));
+        this.fs.copy(this.templatePath("CHANGELOG.md"), this.destinationPath("CHANGELOG.md"));
     }
 
     default() {
