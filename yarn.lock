@@ -139,10 +139,10 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@geniemouse/prettier-config@^1.1.3":
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/@geniemouse/prettier-config/-/prettier-config-1.1.3.tgz#f47ef552838f38d79ccf41de1ae899647561511b"
-  integrity sha512-PGifhJwKl32XZC+1Hh40aDJxDuCVnx2xTImRHXORcdSVw12mKgf4K6/M4y9Gym+CKJMRywJSdOazMdm0thusGg==
+"@geniemouse/prettier-config@^1.1.4":
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/@geniemouse/prettier-config/-/prettier-config-1.1.4.tgz#ad28585cc1c7f177df8afc8a7b8a332696df486a"
+  integrity sha512-PT0KNqz+64S/2GA9EXsMeo61A62RgIqovumrVlhtqe9aT1e4QRePezj32hzCmiKEPxkxJJVY0GYfxy54V5EFGQ==
 
 "@jest/console@^24.7.1":
   version "24.7.1"
@@ -3062,7 +3062,7 @@ lodash.sortby@^4.7.0:
   resolved "https://registry.yarnpkg.com/lodash.sortby/-/lodash.sortby-4.7.0.tgz#edd14c824e2cc9c1e0b0a1b42bb5210516a42438"
   integrity sha1-7dFMgk4sycHgsKG0K7UhBRakJDg=
 
-lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.12, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.2, lodash@~>4.17.14:
+lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.12, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.2:
   version "4.17.14"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.14.tgz#9ce487ae66c96254fe20b599f21b6816028078ba"
   integrity sha512-mmKYbW3GLuJeX+iGP+Y7Gp1AiGHGbXHCOh/jZmrawMmsE7MS4znI3RL2FsjbqOyMayHInjOeykW7PEajUk1/xw==
