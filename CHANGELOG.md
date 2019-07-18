@@ -1,5 +1,11 @@
 # Change log
 
+## v2.0.2
+
+_18 July, 2019_
+
+-   Hotfix update for project dependencies
+
 ## v2.0.1
 
 _13 June, 2019_
